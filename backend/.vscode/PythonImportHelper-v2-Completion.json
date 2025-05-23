@@ -1,0 +1,375 @@
+[
+    {
+        "label": "Blueprint",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "jsonify",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "current_app",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "Blueprint",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "jsonify",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "current_app",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "Blueprint",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "jsonify",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "current_app",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "Flask",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "ObjectId",
+        "importPath": "bson",
+        "description": "bson",
+        "isExtraImport": true,
+        "detail": "bson",
+        "documentation": {}
+    },
+    {
+        "label": "ObjectId",
+        "importPath": "bson",
+        "description": "bson",
+        "isExtraImport": true,
+        "detail": "bson",
+        "documentation": {}
+    },
+    {
+        "label": "ObjectId",
+        "importPath": "bson",
+        "description": "bson",
+        "isExtraImport": true,
+        "detail": "bson",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "timedelta",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "CORS",
+        "importPath": "flask_cors",
+        "description": "flask_cors",
+        "isExtraImport": true,
+        "detail": "flask_cors",
+        "documentation": {}
+    },
+    {
+        "label": "MongoClient",
+        "importPath": "pymongo",
+        "description": "pymongo",
+        "isExtraImport": true,
+        "detail": "pymongo",
+        "documentation": {}
+    },
+    {
+        "label": "config",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "config",
+        "description": "config",
+        "detail": "config",
+        "documentation": {}
+    },
+    {
+        "label": "lab_bp",
+        "importPath": "routes.lab_routes",
+        "description": "routes.lab_routes",
+        "isExtraImport": true,
+        "detail": "routes.lab_routes",
+        "documentation": {}
+    },
+    {
+        "label": "student_bp",
+        "importPath": "routes.student_routes",
+        "description": "routes.student_routes",
+        "isExtraImport": true,
+        "detail": "routes.student_routes",
+        "documentation": {}
+    },
+    {
+        "label": "booking_bp",
+        "importPath": "routes.booking_routes",
+        "description": "routes.booking_routes",
+        "isExtraImport": true,
+        "detail": "routes.booking_routes",
+        "documentation": {}
+    },
+    {
+        "label": "parse_time",
+        "kind": 2,
+        "importPath": "routes.booking_routes",
+        "description": "routes.booking_routes",
+        "peekOfCode": "def parse_time(time_str):\n    return datetime.strptime(time_str, \"%H:%M\")\ndef overlaps(start1, dur1, start2, dur2):\n    end1 = start1 + timedelta(minutes=dur1)\n    end2 = start2 + timedelta(minutes=dur2)\n    return start1 < end2 and start2 < end1\n@booking_bp.route(\"/\", methods=[\"GET\"])\ndef get_bookings():\n    bookings = list(current_app.config[\"db\"].bookings.find())\n    for b in bookings:",
+        "detail": "routes.booking_routes",
+        "documentation": {}
+    },
+    {
+        "label": "overlaps",
+        "kind": 2,
+        "importPath": "routes.booking_routes",
+        "description": "routes.booking_routes",
+        "peekOfCode": "def overlaps(start1, dur1, start2, dur2):\n    end1 = start1 + timedelta(minutes=dur1)\n    end2 = start2 + timedelta(minutes=dur2)\n    return start1 < end2 and start2 < end1\n@booking_bp.route(\"/\", methods=[\"GET\"])\ndef get_bookings():\n    bookings = list(current_app.config[\"db\"].bookings.find())\n    for b in bookings:\n        b[\"_id\"] = str(b[\"_id\"])\n    return jsonify(bookings)",
+        "detail": "routes.booking_routes",
+        "documentation": {}
+    },
+    {
+        "label": "get_bookings",
+        "kind": 2,
+        "importPath": "routes.booking_routes",
+        "description": "routes.booking_routes",
+        "peekOfCode": "def get_bookings():\n    bookings = list(current_app.config[\"db\"].bookings.find())\n    for b in bookings:\n        b[\"_id\"] = str(b[\"_id\"])\n    return jsonify(bookings)\n@booking_bp.route(\"/\", methods=[\"POST\"])\ndef create_booking():\n    data = request.json\n    db = current_app.config[\"db\"]\n    try:",
+        "detail": "routes.booking_routes",
+        "documentation": {}
+    },
+    {
+        "label": "create_booking",
+        "kind": 2,
+        "importPath": "routes.booking_routes",
+        "description": "routes.booking_routes",
+        "peekOfCode": "def create_booking():\n    data = request.json\n    db = current_app.config[\"db\"]\n    try:\n        lab_id = data[\"lab_id\"]\n        student_name = data[\"student_name\"]\n        date_str = data[\"date\"]\n        start_time_str = data[\"start_time\"]\n        duration = int(data[\"duration\"])\n        recurring_weekly = data.get(\"recurring_weekly\", False)",
+        "detail": "routes.booking_routes",
+        "documentation": {}
+    },
+    {
+        "label": "update_booking",
+        "kind": 2,
+        "importPath": "routes.booking_routes",
+        "description": "routes.booking_routes",
+        "peekOfCode": "def update_booking(booking_id):\n    db = current_app.config[\"db\"]\n    data = request.json\n    try:\n        new_date = data[\"date\"]\n        new_start_time = data[\"start_time\"]\n        new_duration = int(data[\"duration\"])\n        new_lab_id = data[\"lab_id\"]\n        conflicts = db.bookings.find({\n            \"_id\": {\"$ne\": ObjectId(booking_id)},",
+        "detail": "routes.booking_routes",
+        "documentation": {}
+    },
+    {
+        "label": "delete_booking",
+        "kind": 2,
+        "importPath": "routes.booking_routes",
+        "description": "routes.booking_routes",
+        "peekOfCode": "def delete_booking(booking_id):\n    result = current_app.config[\"db\"].bookings.delete_one({\"_id\": ObjectId(booking_id)})\n    if result.deleted_count:\n        return jsonify({\"message\": \"Booking deleted\"}), 200\n    return jsonify({\"error\": \"Booking not found\"}), 404",
+        "detail": "routes.booking_routes",
+        "documentation": {}
+    },
+    {
+        "label": "booking_bp",
+        "kind": 5,
+        "importPath": "routes.booking_routes",
+        "description": "routes.booking_routes",
+        "peekOfCode": "booking_bp = Blueprint(\"booking_bp\", __name__)\ndef parse_time(time_str):\n    return datetime.strptime(time_str, \"%H:%M\")\ndef overlaps(start1, dur1, start2, dur2):\n    end1 = start1 + timedelta(minutes=dur1)\n    end2 = start2 + timedelta(minutes=dur2)\n    return start1 < end2 and start2 < end1\n@booking_bp.route(\"/\", methods=[\"GET\"])\ndef get_bookings():\n    bookings = list(current_app.config[\"db\"].bookings.find())",
+        "detail": "routes.booking_routes",
+        "documentation": {}
+    },
+    {
+        "label": "get_labs",
+        "kind": 2,
+        "importPath": "routes.lab_routes",
+        "description": "routes.lab_routes",
+        "peekOfCode": "def get_labs():\n    labs = list(current_app.config[\"db\"].labs.find())\n    for lab in labs:\n        lab[\"_id\"] = str(lab[\"_id\"])\n    return jsonify(labs)\n@lab_bp.route(\"/\", methods=[\"POST\"])\ndef add_lab():\n    data = request.json\n    result = current_app.config[\"db\"].labs.insert_one(data)\n    return jsonify({\"inserted_id\": str(result.inserted_id)}), 201",
+        "detail": "routes.lab_routes",
+        "documentation": {}
+    },
+    {
+        "label": "add_lab",
+        "kind": 2,
+        "importPath": "routes.lab_routes",
+        "description": "routes.lab_routes",
+        "peekOfCode": "def add_lab():\n    data = request.json\n    result = current_app.config[\"db\"].labs.insert_one(data)\n    return jsonify({\"inserted_id\": str(result.inserted_id)}), 201\n@lab_bp.route(\"/<lab_id>\", methods=[\"DELETE\"])\ndef delete_lab(lab_id):\n    result = current_app.config[\"db\"].labs.delete_one({\"_id\": ObjectId(lab_id)})\n    return jsonify({\"deleted_count\": result.deleted_count})",
+        "detail": "routes.lab_routes",
+        "documentation": {}
+    },
+    {
+        "label": "delete_lab",
+        "kind": 2,
+        "importPath": "routes.lab_routes",
+        "description": "routes.lab_routes",
+        "peekOfCode": "def delete_lab(lab_id):\n    result = current_app.config[\"db\"].labs.delete_one({\"_id\": ObjectId(lab_id)})\n    return jsonify({\"deleted_count\": result.deleted_count})",
+        "detail": "routes.lab_routes",
+        "documentation": {}
+    },
+    {
+        "label": "lab_bp",
+        "kind": 5,
+        "importPath": "routes.lab_routes",
+        "description": "routes.lab_routes",
+        "peekOfCode": "lab_bp = Blueprint('lab_bp', __name__)\n@lab_bp.route(\"/\", methods=[\"GET\"])\ndef get_labs():\n    labs = list(current_app.config[\"db\"].labs.find())\n    for lab in labs:\n        lab[\"_id\"] = str(lab[\"_id\"])\n    return jsonify(labs)\n@lab_bp.route(\"/\", methods=[\"POST\"])\ndef add_lab():\n    data = request.json",
+        "detail": "routes.lab_routes",
+        "documentation": {}
+    },
+    {
+        "label": "get_students",
+        "kind": 2,
+        "importPath": "routes.student_routes",
+        "description": "routes.student_routes",
+        "peekOfCode": "def get_students():\n    students = list(current_app.config[\"db\"].students.find())\n    for s in students:\n        s[\"_id\"] = str(s[\"_id\"])\n    return jsonify(students)\n@student_bp.route(\"/\", methods=[\"POST\"])\ndef add_student():\n    data = request.json\n    result = current_app.config[\"db\"].students.insert_one(data)\n    return jsonify({\"inserted_id\": str(result.inserted_id)}), 201",
+        "detail": "routes.student_routes",
+        "documentation": {}
+    },
+    {
+        "label": "add_student",
+        "kind": 2,
+        "importPath": "routes.student_routes",
+        "description": "routes.student_routes",
+        "peekOfCode": "def add_student():\n    data = request.json\n    result = current_app.config[\"db\"].students.insert_one(data)\n    return jsonify({\"inserted_id\": str(result.inserted_id)}), 201\n@student_bp.route(\"/<student_id>\", methods=[\"DELETE\"])\ndef delete_student(student_id):\n    result = current_app.config[\"db\"].students.delete_one({\"_id\": ObjectId(student_id)})\n    return jsonify({\"deleted_count\": result.deleted_count})",
+        "detail": "routes.student_routes",
+        "documentation": {}
+    },
+    {
+        "label": "delete_student",
+        "kind": 2,
+        "importPath": "routes.student_routes",
+        "description": "routes.student_routes",
+        "peekOfCode": "def delete_student(student_id):\n    result = current_app.config[\"db\"].students.delete_one({\"_id\": ObjectId(student_id)})\n    return jsonify({\"deleted_count\": result.deleted_count})",
+        "detail": "routes.student_routes",
+        "documentation": {}
+    },
+    {
+        "label": "student_bp",
+        "kind": 5,
+        "importPath": "routes.student_routes",
+        "description": "routes.student_routes",
+        "peekOfCode": "student_bp = Blueprint('student_bp', __name__)\n@student_bp.route(\"/\", methods=[\"GET\"])\ndef get_students():\n    students = list(current_app.config[\"db\"].students.find())\n    for s in students:\n        s[\"_id\"] = str(s[\"_id\"])\n    return jsonify(students)\n@student_bp.route(\"/\", methods=[\"POST\"])\ndef add_student():\n    data = request.json",
+        "detail": "routes.student_routes",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "app = Flask(__name__)\nCORS(app)\nclient = MongoClient(config.MONGO_URI)\ndb = client.get_database()\napp.config[\"db\"] = db\napp.register_blueprint(lab_bp, url_prefix=\"/api/labs\")\napp.register_blueprint(student_bp, url_prefix=\"/api/students\")\napp.register_blueprint(booking_bp, url_prefix=\"/api/bookings\")\nif __name__ == \"__main__\":\n    app.run(debug=True)",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "client",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "client = MongoClient(config.MONGO_URI)\ndb = client.get_database()\napp.config[\"db\"] = db\napp.register_blueprint(lab_bp, url_prefix=\"/api/labs\")\napp.register_blueprint(student_bp, url_prefix=\"/api/students\")\napp.register_blueprint(booking_bp, url_prefix=\"/api/bookings\")\nif __name__ == \"__main__\":\n    app.run(debug=True)",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "db",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "db = client.get_database()\napp.config[\"db\"] = db\napp.register_blueprint(lab_bp, url_prefix=\"/api/labs\")\napp.register_blueprint(student_bp, url_prefix=\"/api/students\")\napp.register_blueprint(booking_bp, url_prefix=\"/api/bookings\")\nif __name__ == \"__main__\":\n    app.run(debug=True)",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "app.config[\"db\"]",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "app.config[\"db\"] = db\napp.register_blueprint(lab_bp, url_prefix=\"/api/labs\")\napp.register_blueprint(student_bp, url_prefix=\"/api/students\")\napp.register_blueprint(booking_bp, url_prefix=\"/api/bookings\")\nif __name__ == \"__main__\":\n    app.run(debug=True)",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "MONGO_URI",
+        "kind": 5,
+        "importPath": "config",
+        "description": "config",
+        "peekOfCode": "MONGO_URI = \"mongodb://localhost:27017/lab_management\"",
+        "detail": "config",
+        "documentation": {}
+    }
+]

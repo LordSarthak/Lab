@@ -1,0 +1,670 @@
+[
+    {
+        "label": "ObjectId",
+        "importPath": "bson.objectid",
+        "description": "bson.objectid",
+        "isExtraImport": true,
+        "detail": "bson.objectid",
+        "documentation": {}
+    },
+    {
+        "label": "ObjectId",
+        "importPath": "bson.objectid",
+        "description": "bson.objectid",
+        "isExtraImport": true,
+        "detail": "bson.objectid",
+        "documentation": {}
+    },
+    {
+        "label": "ObjectId",
+        "importPath": "bson.objectid",
+        "description": "bson.objectid",
+        "isExtraImport": true,
+        "detail": "bson.objectid",
+        "documentation": {}
+    },
+    {
+        "label": "Blueprint",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "jsonify",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "Blueprint",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "jsonify",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "Blueprint",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "jsonify",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "Flask",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "ObjectId",
+        "importPath": "bson",
+        "description": "bson",
+        "isExtraImport": true,
+        "detail": "bson",
+        "documentation": {}
+    },
+    {
+        "label": "ObjectId",
+        "importPath": "bson",
+        "description": "bson",
+        "isExtraImport": true,
+        "detail": "bson",
+        "documentation": {}
+    },
+    {
+        "label": "ObjectId",
+        "importPath": "bson",
+        "description": "bson",
+        "isExtraImport": true,
+        "detail": "bson",
+        "documentation": {}
+    },
+    {
+        "label": "MongoClient",
+        "importPath": "pymongo",
+        "description": "pymongo",
+        "isExtraImport": true,
+        "detail": "pymongo",
+        "documentation": {}
+    },
+    {
+        "label": "MongoClient",
+        "importPath": "pymongo",
+        "description": "pymongo",
+        "isExtraImport": true,
+        "detail": "pymongo",
+        "documentation": {}
+    },
+    {
+        "label": "MongoClient",
+        "importPath": "pymongo",
+        "description": "pymongo",
+        "isExtraImport": true,
+        "detail": "pymongo",
+        "documentation": {}
+    },
+    {
+        "label": "MongoClient",
+        "importPath": "pymongo",
+        "description": "pymongo",
+        "isExtraImport": true,
+        "detail": "pymongo",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "CORS",
+        "importPath": "flask_cors",
+        "description": "flask_cors",
+        "isExtraImport": true,
+        "detail": "flask_cors",
+        "documentation": {}
+    },
+    {
+        "label": "config",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "config",
+        "description": "config",
+        "detail": "config",
+        "documentation": {}
+    },
+    {
+        "label": "labs_bp",
+        "importPath": "routes.labs",
+        "description": "routes.labs",
+        "isExtraImport": true,
+        "detail": "routes.labs",
+        "documentation": {}
+    },
+    {
+        "label": "students_bp",
+        "importPath": "routes.students",
+        "description": "routes.students",
+        "isExtraImport": true,
+        "detail": "routes.students",
+        "documentation": {}
+    },
+    {
+        "label": "bookings_bp",
+        "importPath": "routes.bookings",
+        "description": "routes.bookings",
+        "isExtraImport": true,
+        "detail": "routes.bookings",
+        "documentation": {}
+    },
+    {
+        "label": "json",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "json",
+        "description": "json",
+        "detail": "json",
+        "documentation": {}
+    },
+    {
+        "label": "get_all_bookings",
+        "kind": 2,
+        "importPath": "backend.models.booking",
+        "description": "backend.models.booking",
+        "peekOfCode": "def get_all_bookings(db):\n    bookings = list(db.bookings.find())\n    for b in bookings:\n        b['_id'] = str(b['_id'])\n    return bookings\ndef create_booking(db, data):\n    db.bookings.insert_one(data)\n    return {\"message\": \"Booking created\"}\ndef update_booking(db, booking_id, data):\n    db.bookings.update_one({'_id': ObjectId(booking_id)}, {\"$set\": data})",
+        "detail": "backend.models.booking",
+        "documentation": {}
+    },
+    {
+        "label": "create_booking",
+        "kind": 2,
+        "importPath": "backend.models.booking",
+        "description": "backend.models.booking",
+        "peekOfCode": "def create_booking(db, data):\n    db.bookings.insert_one(data)\n    return {\"message\": \"Booking created\"}\ndef update_booking(db, booking_id, data):\n    db.bookings.update_one({'_id': ObjectId(booking_id)}, {\"$set\": data})\n    return {\"message\": \"Booking updated\"}\ndef delete_booking(db, booking_id):\n    db.bookings.delete_one({'_id': ObjectId(booking_id)})\n    return {\"message\": \"Booking deleted\"}",
+        "detail": "backend.models.booking",
+        "documentation": {}
+    },
+    {
+        "label": "update_booking",
+        "kind": 2,
+        "importPath": "backend.models.booking",
+        "description": "backend.models.booking",
+        "peekOfCode": "def update_booking(db, booking_id, data):\n    db.bookings.update_one({'_id': ObjectId(booking_id)}, {\"$set\": data})\n    return {\"message\": \"Booking updated\"}\ndef delete_booking(db, booking_id):\n    db.bookings.delete_one({'_id': ObjectId(booking_id)})\n    return {\"message\": \"Booking deleted\"}",
+        "detail": "backend.models.booking",
+        "documentation": {}
+    },
+    {
+        "label": "delete_booking",
+        "kind": 2,
+        "importPath": "backend.models.booking",
+        "description": "backend.models.booking",
+        "peekOfCode": "def delete_booking(db, booking_id):\n    db.bookings.delete_one({'_id': ObjectId(booking_id)})\n    return {\"message\": \"Booking deleted\"}",
+        "detail": "backend.models.booking",
+        "documentation": {}
+    },
+    {
+        "label": "get_all_labs",
+        "kind": 2,
+        "importPath": "backend.models.lab",
+        "description": "backend.models.lab",
+        "peekOfCode": "def get_all_labs(db):\n    labs = list(db.labs.find())\n    for lab in labs:\n        lab['_id'] = str(lab['_id'])\n    return labs\ndef create_lab(db, data):\n    db.labs.insert_one(data)\n    return {\"message\": \"Lab created successfully\"}\ndef update_lab(db, lab_id, data):\n    db.labs.update_one({'_id': ObjectId(lab_id)}, {\"$set\": data})",
+        "detail": "backend.models.lab",
+        "documentation": {}
+    },
+    {
+        "label": "create_lab",
+        "kind": 2,
+        "importPath": "backend.models.lab",
+        "description": "backend.models.lab",
+        "peekOfCode": "def create_lab(db, data):\n    db.labs.insert_one(data)\n    return {\"message\": \"Lab created successfully\"}\ndef update_lab(db, lab_id, data):\n    db.labs.update_one({'_id': ObjectId(lab_id)}, {\"$set\": data})\n    return {\"message\": \"Lab updated successfully\"}\ndef delete_lab(db, lab_id):\n    db.labs.delete_one({'_id': ObjectId(lab_id)})\n    return {\"message\": \"Lab deleted successfully\"}",
+        "detail": "backend.models.lab",
+        "documentation": {}
+    },
+    {
+        "label": "update_lab",
+        "kind": 2,
+        "importPath": "backend.models.lab",
+        "description": "backend.models.lab",
+        "peekOfCode": "def update_lab(db, lab_id, data):\n    db.labs.update_one({'_id': ObjectId(lab_id)}, {\"$set\": data})\n    return {\"message\": \"Lab updated successfully\"}\ndef delete_lab(db, lab_id):\n    db.labs.delete_one({'_id': ObjectId(lab_id)})\n    return {\"message\": \"Lab deleted successfully\"}",
+        "detail": "backend.models.lab",
+        "documentation": {}
+    },
+    {
+        "label": "delete_lab",
+        "kind": 2,
+        "importPath": "backend.models.lab",
+        "description": "backend.models.lab",
+        "peekOfCode": "def delete_lab(db, lab_id):\n    db.labs.delete_one({'_id': ObjectId(lab_id)})\n    return {\"message\": \"Lab deleted successfully\"}",
+        "detail": "backend.models.lab",
+        "documentation": {}
+    },
+    {
+        "label": "get_all_students",
+        "kind": 2,
+        "importPath": "backend.models.student",
+        "description": "backend.models.student",
+        "peekOfCode": "def get_all_students(db):\n    students = list(db.students.find())\n    for s in students:\n        s['_id'] = str(s['_id'])\n    return students\ndef create_student(db, data):\n    db.students.insert_one(data)\n    return {\"message\": \"Student added successfully\"}\ndef update_student(db, student_id, data):\n    db.students.update_one({'_id': ObjectId(student_id)}, {\"$set\": data})",
+        "detail": "backend.models.student",
+        "documentation": {}
+    },
+    {
+        "label": "create_student",
+        "kind": 2,
+        "importPath": "backend.models.student",
+        "description": "backend.models.student",
+        "peekOfCode": "def create_student(db, data):\n    db.students.insert_one(data)\n    return {\"message\": \"Student added successfully\"}\ndef update_student(db, student_id, data):\n    db.students.update_one({'_id': ObjectId(student_id)}, {\"$set\": data})\n    return {\"message\": \"Student updated successfully\"}\ndef delete_student(db, student_id):\n    db.students.delete_one({'_id': ObjectId(student_id)})\n    return {\"message\": \"Student deleted successfully\"}",
+        "detail": "backend.models.student",
+        "documentation": {}
+    },
+    {
+        "label": "update_student",
+        "kind": 2,
+        "importPath": "backend.models.student",
+        "description": "backend.models.student",
+        "peekOfCode": "def update_student(db, student_id, data):\n    db.students.update_one({'_id': ObjectId(student_id)}, {\"$set\": data})\n    return {\"message\": \"Student updated successfully\"}\ndef delete_student(db, student_id):\n    db.students.delete_one({'_id': ObjectId(student_id)})\n    return {\"message\": \"Student deleted successfully\"}",
+        "detail": "backend.models.student",
+        "documentation": {}
+    },
+    {
+        "label": "delete_student",
+        "kind": 2,
+        "importPath": "backend.models.student",
+        "description": "backend.models.student",
+        "peekOfCode": "def delete_student(db, student_id):\n    db.students.delete_one({'_id': ObjectId(student_id)})\n    return {\"message\": \"Student deleted successfully\"}",
+        "detail": "backend.models.student",
+        "documentation": {}
+    },
+    {
+        "label": "serialize",
+        "kind": 2,
+        "importPath": "backend.routes.bookings",
+        "description": "backend.routes.bookings",
+        "peekOfCode": "def serialize(booking):\n    booking[\"_id\"] = str(booking[\"_id\"])\n    return booking\n@bookings_bp.route(\"/\", methods=[\"GET\"])\ndef get_bookings():\n    bookings = list(collection.find())\n    return jsonify([serialize(b) for b in bookings])\n@bookings_bp.route(\"/\", methods=[\"POST\"])\ndef create_booking():\n    data = request.json",
+        "detail": "backend.routes.bookings",
+        "documentation": {}
+    },
+    {
+        "label": "get_bookings",
+        "kind": 2,
+        "importPath": "backend.routes.bookings",
+        "description": "backend.routes.bookings",
+        "peekOfCode": "def get_bookings():\n    bookings = list(collection.find())\n    return jsonify([serialize(b) for b in bookings])\n@bookings_bp.route(\"/\", methods=[\"POST\"])\ndef create_booking():\n    data = request.json\n    booking = {\n        \"title\": data[\"title\"],\n        \"start\": datetime.fromisoformat(data[\"start\"]),\n        \"end\": datetime.fromisoformat(data[\"end\"])",
+        "detail": "backend.routes.bookings",
+        "documentation": {}
+    },
+    {
+        "label": "create_booking",
+        "kind": 2,
+        "importPath": "backend.routes.bookings",
+        "description": "backend.routes.bookings",
+        "peekOfCode": "def create_booking():\n    data = request.json\n    booking = {\n        \"title\": data[\"title\"],\n        \"start\": datetime.fromisoformat(data[\"start\"]),\n        \"end\": datetime.fromisoformat(data[\"end\"])\n    }\n    result = collection.insert_one(booking)\n    return jsonify({\"_id\": str(result.inserted_id)}), 201\n@bookings_bp.route(\"/<id>\", methods=[\"PUT\"])",
+        "detail": "backend.routes.bookings",
+        "documentation": {}
+    },
+    {
+        "label": "update_booking",
+        "kind": 2,
+        "importPath": "backend.routes.bookings",
+        "description": "backend.routes.bookings",
+        "peekOfCode": "def update_booking(id):\n    data = request.json\n    updated = {\n        \"title\": data[\"title\"],\n        \"start\": datetime.fromisoformat(data[\"start\"]),\n        \"end\": datetime.fromisoformat(data[\"end\"])\n    }\n    collection.update_one({\"_id\": ObjectId(id)}, {\"$set\": updated})\n    return jsonify({\"message\": \"Booking updated\"})\n@bookings_bp.route(\"/<id>\", methods=[\"DELETE\"])",
+        "detail": "backend.routes.bookings",
+        "documentation": {}
+    },
+    {
+        "label": "delete_booking",
+        "kind": 2,
+        "importPath": "backend.routes.bookings",
+        "description": "backend.routes.bookings",
+        "peekOfCode": "def delete_booking(id):\n    collection.delete_one({\"_id\": ObjectId(id)})\n    return jsonify({\"message\": \"Booking deleted\"})",
+        "detail": "backend.routes.bookings",
+        "documentation": {}
+    },
+    {
+        "label": "bookings_bp",
+        "kind": 5,
+        "importPath": "backend.routes.bookings",
+        "description": "backend.routes.bookings",
+        "peekOfCode": "bookings_bp = Blueprint(\"bookings\", __name__)\nclient = MongoClient(\"mongodb://localhost:27017\")\ndb = client[\"lab_management\"]\ncollection = db[\"bookings\"]\ndef serialize(booking):\n    booking[\"_id\"] = str(booking[\"_id\"])\n    return booking\n@bookings_bp.route(\"/\", methods=[\"GET\"])\ndef get_bookings():\n    bookings = list(collection.find())",
+        "detail": "backend.routes.bookings",
+        "documentation": {}
+    },
+    {
+        "label": "client",
+        "kind": 5,
+        "importPath": "backend.routes.bookings",
+        "description": "backend.routes.bookings",
+        "peekOfCode": "client = MongoClient(\"mongodb://localhost:27017\")\ndb = client[\"lab_management\"]\ncollection = db[\"bookings\"]\ndef serialize(booking):\n    booking[\"_id\"] = str(booking[\"_id\"])\n    return booking\n@bookings_bp.route(\"/\", methods=[\"GET\"])\ndef get_bookings():\n    bookings = list(collection.find())\n    return jsonify([serialize(b) for b in bookings])",
+        "detail": "backend.routes.bookings",
+        "documentation": {}
+    },
+    {
+        "label": "db",
+        "kind": 5,
+        "importPath": "backend.routes.bookings",
+        "description": "backend.routes.bookings",
+        "peekOfCode": "db = client[\"lab_management\"]\ncollection = db[\"bookings\"]\ndef serialize(booking):\n    booking[\"_id\"] = str(booking[\"_id\"])\n    return booking\n@bookings_bp.route(\"/\", methods=[\"GET\"])\ndef get_bookings():\n    bookings = list(collection.find())\n    return jsonify([serialize(b) for b in bookings])\n@bookings_bp.route(\"/\", methods=[\"POST\"])",
+        "detail": "backend.routes.bookings",
+        "documentation": {}
+    },
+    {
+        "label": "collection",
+        "kind": 5,
+        "importPath": "backend.routes.bookings",
+        "description": "backend.routes.bookings",
+        "peekOfCode": "collection = db[\"bookings\"]\ndef serialize(booking):\n    booking[\"_id\"] = str(booking[\"_id\"])\n    return booking\n@bookings_bp.route(\"/\", methods=[\"GET\"])\ndef get_bookings():\n    bookings = list(collection.find())\n    return jsonify([serialize(b) for b in bookings])\n@bookings_bp.route(\"/\", methods=[\"POST\"])\ndef create_booking():",
+        "detail": "backend.routes.bookings",
+        "documentation": {}
+    },
+    {
+        "label": "serialize",
+        "kind": 2,
+        "importPath": "backend.routes.labs",
+        "description": "backend.routes.labs",
+        "peekOfCode": "def serialize(lab):\n    lab[\"_id\"] = str(lab[\"_id\"])\n    return lab\n@labs_bp.route(\"/\", methods=[\"GET\"])\ndef get_labs():\n    labs = list(collection.find())\n    return jsonify([serialize(lab) for lab in labs])\n@labs_bp.route(\"/\", methods=[\"POST\"])\ndef create_lab():\n    lab = request.json",
+        "detail": "backend.routes.labs",
+        "documentation": {}
+    },
+    {
+        "label": "get_labs",
+        "kind": 2,
+        "importPath": "backend.routes.labs",
+        "description": "backend.routes.labs",
+        "peekOfCode": "def get_labs():\n    labs = list(collection.find())\n    return jsonify([serialize(lab) for lab in labs])\n@labs_bp.route(\"/\", methods=[\"POST\"])\ndef create_lab():\n    lab = request.json\n    result = collection.insert_one(lab)\n    return jsonify({\"_id\": str(result.inserted_id)})\n@labs_bp.route(\"/<id>\", methods=[\"PUT\"])\ndef update_lab(id):",
+        "detail": "backend.routes.labs",
+        "documentation": {}
+    },
+    {
+        "label": "create_lab",
+        "kind": 2,
+        "importPath": "backend.routes.labs",
+        "description": "backend.routes.labs",
+        "peekOfCode": "def create_lab():\n    lab = request.json\n    result = collection.insert_one(lab)\n    return jsonify({\"_id\": str(result.inserted_id)})\n@labs_bp.route(\"/<id>\", methods=[\"PUT\"])\ndef update_lab(id):\n    data = request.json\n    collection.update_one({\"_id\": ObjectId(id)}, {\"$set\": data})\n    return jsonify({\"message\": \"Lab updated\"})\n@labs_bp.route(\"/<id>\", methods=[\"DELETE\"])",
+        "detail": "backend.routes.labs",
+        "documentation": {}
+    },
+    {
+        "label": "update_lab",
+        "kind": 2,
+        "importPath": "backend.routes.labs",
+        "description": "backend.routes.labs",
+        "peekOfCode": "def update_lab(id):\n    data = request.json\n    collection.update_one({\"_id\": ObjectId(id)}, {\"$set\": data})\n    return jsonify({\"message\": \"Lab updated\"})\n@labs_bp.route(\"/<id>\", methods=[\"DELETE\"])\ndef delete_lab(id):\n    collection.delete_one({\"_id\": ObjectId(id)})\n    return jsonify({\"message\": \"Lab deleted\"})",
+        "detail": "backend.routes.labs",
+        "documentation": {}
+    },
+    {
+        "label": "delete_lab",
+        "kind": 2,
+        "importPath": "backend.routes.labs",
+        "description": "backend.routes.labs",
+        "peekOfCode": "def delete_lab(id):\n    collection.delete_one({\"_id\": ObjectId(id)})\n    return jsonify({\"message\": \"Lab deleted\"})",
+        "detail": "backend.routes.labs",
+        "documentation": {}
+    },
+    {
+        "label": "labs_bp",
+        "kind": 5,
+        "importPath": "backend.routes.labs",
+        "description": "backend.routes.labs",
+        "peekOfCode": "labs_bp = Blueprint(\"labs\", __name__)\nclient = MongoClient(\"mongodb://localhost:27017\")\ndb = client[\"lab_management\"]\ncollection = db[\"labs\"]\ndef serialize(lab):\n    lab[\"_id\"] = str(lab[\"_id\"])\n    return lab\n@labs_bp.route(\"/\", methods=[\"GET\"])\ndef get_labs():\n    labs = list(collection.find())",
+        "detail": "backend.routes.labs",
+        "documentation": {}
+    },
+    {
+        "label": "client",
+        "kind": 5,
+        "importPath": "backend.routes.labs",
+        "description": "backend.routes.labs",
+        "peekOfCode": "client = MongoClient(\"mongodb://localhost:27017\")\ndb = client[\"lab_management\"]\ncollection = db[\"labs\"]\ndef serialize(lab):\n    lab[\"_id\"] = str(lab[\"_id\"])\n    return lab\n@labs_bp.route(\"/\", methods=[\"GET\"])\ndef get_labs():\n    labs = list(collection.find())\n    return jsonify([serialize(lab) for lab in labs])",
+        "detail": "backend.routes.labs",
+        "documentation": {}
+    },
+    {
+        "label": "db",
+        "kind": 5,
+        "importPath": "backend.routes.labs",
+        "description": "backend.routes.labs",
+        "peekOfCode": "db = client[\"lab_management\"]\ncollection = db[\"labs\"]\ndef serialize(lab):\n    lab[\"_id\"] = str(lab[\"_id\"])\n    return lab\n@labs_bp.route(\"/\", methods=[\"GET\"])\ndef get_labs():\n    labs = list(collection.find())\n    return jsonify([serialize(lab) for lab in labs])\n@labs_bp.route(\"/\", methods=[\"POST\"])",
+        "detail": "backend.routes.labs",
+        "documentation": {}
+    },
+    {
+        "label": "collection",
+        "kind": 5,
+        "importPath": "backend.routes.labs",
+        "description": "backend.routes.labs",
+        "peekOfCode": "collection = db[\"labs\"]\ndef serialize(lab):\n    lab[\"_id\"] = str(lab[\"_id\"])\n    return lab\n@labs_bp.route(\"/\", methods=[\"GET\"])\ndef get_labs():\n    labs = list(collection.find())\n    return jsonify([serialize(lab) for lab in labs])\n@labs_bp.route(\"/\", methods=[\"POST\"])\ndef create_lab():",
+        "detail": "backend.routes.labs",
+        "documentation": {}
+    },
+    {
+        "label": "serialize",
+        "kind": 2,
+        "importPath": "backend.routes.students",
+        "description": "backend.routes.students",
+        "peekOfCode": "def serialize(student):\n    student[\"_id\"] = str(student[\"_id\"])\n    return student\n@students_bp.route(\"/\", methods=[\"GET\"])\ndef get_students():\n    return jsonify([serialize(s) for s in collection.find()])\n@students_bp.route(\"/\", methods=[\"POST\"])\ndef add_student():\n    data = request.json\n    result = collection.insert_one(data)",
+        "detail": "backend.routes.students",
+        "documentation": {}
+    },
+    {
+        "label": "get_students",
+        "kind": 2,
+        "importPath": "backend.routes.students",
+        "description": "backend.routes.students",
+        "peekOfCode": "def get_students():\n    return jsonify([serialize(s) for s in collection.find()])\n@students_bp.route(\"/\", methods=[\"POST\"])\ndef add_student():\n    data = request.json\n    result = collection.insert_one(data)\n    return jsonify({\"_id\": str(result.inserted_id)})\n@students_bp.route(\"/<id>\", methods=[\"PUT\"])\ndef update_student(id):\n    data = request.json",
+        "detail": "backend.routes.students",
+        "documentation": {}
+    },
+    {
+        "label": "add_student",
+        "kind": 2,
+        "importPath": "backend.routes.students",
+        "description": "backend.routes.students",
+        "peekOfCode": "def add_student():\n    data = request.json\n    result = collection.insert_one(data)\n    return jsonify({\"_id\": str(result.inserted_id)})\n@students_bp.route(\"/<id>\", methods=[\"PUT\"])\ndef update_student(id):\n    data = request.json\n    collection.update_one({\"_id\": ObjectId(id)}, {\"$set\": data})\n    return jsonify({\"message\": \"Student updated\"})\n@students_bp.route(\"/<id>\", methods=[\"DELETE\"])",
+        "detail": "backend.routes.students",
+        "documentation": {}
+    },
+    {
+        "label": "update_student",
+        "kind": 2,
+        "importPath": "backend.routes.students",
+        "description": "backend.routes.students",
+        "peekOfCode": "def update_student(id):\n    data = request.json\n    collection.update_one({\"_id\": ObjectId(id)}, {\"$set\": data})\n    return jsonify({\"message\": \"Student updated\"})\n@students_bp.route(\"/<id>\", methods=[\"DELETE\"])\ndef delete_student(id):\n    collection.delete_one({\"_id\": ObjectId(id)})\n    return jsonify({\"message\": \"Student deleted\"})",
+        "detail": "backend.routes.students",
+        "documentation": {}
+    },
+    {
+        "label": "delete_student",
+        "kind": 2,
+        "importPath": "backend.routes.students",
+        "description": "backend.routes.students",
+        "peekOfCode": "def delete_student(id):\n    collection.delete_one({\"_id\": ObjectId(id)})\n    return jsonify({\"message\": \"Student deleted\"})",
+        "detail": "backend.routes.students",
+        "documentation": {}
+    },
+    {
+        "label": "students_bp",
+        "kind": 5,
+        "importPath": "backend.routes.students",
+        "description": "backend.routes.students",
+        "peekOfCode": "students_bp = Blueprint(\"students\", __name__)\nclient = MongoClient(\"mongodb://localhost:27017\")\ndb = client[\"lab_management\"]\ncollection = db[\"students\"]\ndef serialize(student):\n    student[\"_id\"] = str(student[\"_id\"])\n    return student\n@students_bp.route(\"/\", methods=[\"GET\"])\ndef get_students():\n    return jsonify([serialize(s) for s in collection.find()])",
+        "detail": "backend.routes.students",
+        "documentation": {}
+    },
+    {
+        "label": "client",
+        "kind": 5,
+        "importPath": "backend.routes.students",
+        "description": "backend.routes.students",
+        "peekOfCode": "client = MongoClient(\"mongodb://localhost:27017\")\ndb = client[\"lab_management\"]\ncollection = db[\"students\"]\ndef serialize(student):\n    student[\"_id\"] = str(student[\"_id\"])\n    return student\n@students_bp.route(\"/\", methods=[\"GET\"])\ndef get_students():\n    return jsonify([serialize(s) for s in collection.find()])\n@students_bp.route(\"/\", methods=[\"POST\"])",
+        "detail": "backend.routes.students",
+        "documentation": {}
+    },
+    {
+        "label": "db",
+        "kind": 5,
+        "importPath": "backend.routes.students",
+        "description": "backend.routes.students",
+        "peekOfCode": "db = client[\"lab_management\"]\ncollection = db[\"students\"]\ndef serialize(student):\n    student[\"_id\"] = str(student[\"_id\"])\n    return student\n@students_bp.route(\"/\", methods=[\"GET\"])\ndef get_students():\n    return jsonify([serialize(s) for s in collection.find()])\n@students_bp.route(\"/\", methods=[\"POST\"])\ndef add_student():",
+        "detail": "backend.routes.students",
+        "documentation": {}
+    },
+    {
+        "label": "collection",
+        "kind": 5,
+        "importPath": "backend.routes.students",
+        "description": "backend.routes.students",
+        "peekOfCode": "collection = db[\"students\"]\ndef serialize(student):\n    student[\"_id\"] = str(student[\"_id\"])\n    return student\n@students_bp.route(\"/\", methods=[\"GET\"])\ndef get_students():\n    return jsonify([serialize(s) for s in collection.find()])\n@students_bp.route(\"/\", methods=[\"POST\"])\ndef add_student():\n    data = request.json",
+        "detail": "backend.routes.students",
+        "documentation": {}
+    },
+    {
+        "label": "ping_db",
+        "kind": 2,
+        "importPath": "backend.app",
+        "description": "backend.app",
+        "peekOfCode": "def ping_db():\n    try:\n        db.command(\"ping\")\n        return {\"status\": \"connected\", \"message\": \"MongoDB is working ✅\"}, 200\n    except Exception as e:\n        return {\"status\": \"error\", \"message\": str(e)}, 500\n# ✅ Start the server\nif __name__ == '__main__':\n    app.run(debug=True)",
+        "detail": "backend.app",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "backend.app",
+        "description": "backend.app",
+        "peekOfCode": "app = Flask(__name__)\n# ✅ Prevent Flask from redirecting /labs to /labs/\napp.url_map.strict_slashes = False\n# ✅ CORS configuration for frontend access\nCORS(app, resources={r\"/*\": {\"origins\": \"http://localhost:3000\"}}, supports_credentials=True)\n# ✅ MongoDB connection\nclient = MongoClient(config.MONGO_URI)  # Must include /lab_management\ndb = client[\"lab_management\"]           # Access DB directly (prevents redirect)\n# ✅ Share DB with route files via app config\napp.config['DB'] = db",
+        "detail": "backend.app",
+        "documentation": {}
+    },
+    {
+        "label": "app.url_map.strict_slashes",
+        "kind": 5,
+        "importPath": "backend.app",
+        "description": "backend.app",
+        "peekOfCode": "app.url_map.strict_slashes = False\n# ✅ CORS configuration for frontend access\nCORS(app, resources={r\"/*\": {\"origins\": \"http://localhost:3000\"}}, supports_credentials=True)\n# ✅ MongoDB connection\nclient = MongoClient(config.MONGO_URI)  # Must include /lab_management\ndb = client[\"lab_management\"]           # Access DB directly (prevents redirect)\n# ✅ Share DB with route files via app config\napp.config['DB'] = db\n# ✅ Register route blueprints\napp.register_blueprint(labs_bp, url_prefix='/labs')",
+        "detail": "backend.app",
+        "documentation": {}
+    },
+    {
+        "label": "client",
+        "kind": 5,
+        "importPath": "backend.app",
+        "description": "backend.app",
+        "peekOfCode": "client = MongoClient(config.MONGO_URI)  # Must include /lab_management\ndb = client[\"lab_management\"]           # Access DB directly (prevents redirect)\n# ✅ Share DB with route files via app config\napp.config['DB'] = db\n# ✅ Register route blueprints\napp.register_blueprint(labs_bp, url_prefix='/labs')\napp.register_blueprint(students_bp, url_prefix='/students')\napp.register_blueprint(bookings_bp, url_prefix='/bookings')\n# ✅ Optional: Mongo health check\n@app.route('/ping-db', methods=['GET'])",
+        "detail": "backend.app",
+        "documentation": {}
+    },
+    {
+        "label": "db",
+        "kind": 5,
+        "importPath": "backend.app",
+        "description": "backend.app",
+        "peekOfCode": "db = client[\"lab_management\"]           # Access DB directly (prevents redirect)\n# ✅ Share DB with route files via app config\napp.config['DB'] = db\n# ✅ Register route blueprints\napp.register_blueprint(labs_bp, url_prefix='/labs')\napp.register_blueprint(students_bp, url_prefix='/students')\napp.register_blueprint(bookings_bp, url_prefix='/bookings')\n# ✅ Optional: Mongo health check\n@app.route('/ping-db', methods=['GET'])\ndef ping_db():",
+        "detail": "backend.app",
+        "documentation": {}
+    },
+    {
+        "label": "app.config['DB']",
+        "kind": 5,
+        "importPath": "backend.app",
+        "description": "backend.app",
+        "peekOfCode": "app.config['DB'] = db\n# ✅ Register route blueprints\napp.register_blueprint(labs_bp, url_prefix='/labs')\napp.register_blueprint(students_bp, url_prefix='/students')\napp.register_blueprint(bookings_bp, url_prefix='/bookings')\n# ✅ Optional: Mongo health check\n@app.route('/ping-db', methods=['GET'])\ndef ping_db():\n    try:\n        db.command(\"ping\")",
+        "detail": "backend.app",
+        "documentation": {}
+    },
+    {
+        "label": "MONGO_URI",
+        "kind": 5,
+        "importPath": "backend.config",
+        "description": "backend.config",
+        "peekOfCode": "MONGO_URI = \"mongodb://localhost:27017/lab_management\"",
+        "detail": "backend.config",
+        "documentation": {}
+    },
+    {
+        "label": "_Known",
+        "kind": 6,
+        "importPath": "frontend.lab-management-frontend.node_modules.flatted.python.flatted",
+        "description": "frontend.lab-management-frontend.node_modules.flatted.python.flatted",
+        "peekOfCode": "class _Known:\n    def __init__(self):\n        self.key = []\n        self.value = []\nclass _String:\n    def __init__(self, value):\n        self.value = value\ndef _array_keys(value):\n    keys = []\n    i = 0",
+        "detail": "frontend.lab-management-frontend.node_modules.flatted.python.flatted",
+        "documentation": {}
+    },
+    {
+        "label": "_String",
+        "kind": 6,
+        "importPath": "frontend.lab-management-frontend.node_modules.flatted.python.flatted",
+        "description": "frontend.lab-management-frontend.node_modules.flatted.python.flatted",
+        "peekOfCode": "class _String:\n    def __init__(self, value):\n        self.value = value\ndef _array_keys(value):\n    keys = []\n    i = 0\n    for _ in value:\n        keys.append(i)\n        i += 1\n    return keys",
+        "detail": "frontend.lab-management-frontend.node_modules.flatted.python.flatted",
+        "documentation": {}
+    },
+    {
+        "label": "parse",
+        "kind": 2,
+        "importPath": "frontend.lab-management-frontend.node_modules.flatted.python.flatted",
+        "description": "frontend.lab-management-frontend.node_modules.flatted.python.flatted",
+        "peekOfCode": "def parse(value, *args, **kwargs):\n    json = _json.loads(value, *args, **kwargs)\n    wrapped = []\n    for value in json:\n        wrapped.append(_wrap(value))\n    input = []\n    for value in wrapped:\n        if isinstance(value, _String):\n            input.append(value.value)\n        else:",
+        "detail": "frontend.lab-management-frontend.node_modules.flatted.python.flatted",
+        "documentation": {}
+    },
+    {
+        "label": "stringify",
+        "kind": 2,
+        "importPath": "frontend.lab-management-frontend.node_modules.flatted.python.flatted",
+        "description": "frontend.lab-management-frontend.node_modules.flatted.python.flatted",
+        "peekOfCode": "def stringify(value, *args, **kwargs):\n    known = _Known()\n    input = []\n    output = []\n    i = int(_index(known, input, value))\n    while i < len(input):\n        output.append(_transform(known, input, input[i]))\n        i += 1\n    return _json.dumps(output, *args, **kwargs)",
+        "detail": "frontend.lab-management-frontend.node_modules.flatted.python.flatted",
+        "documentation": {}
+    }
+]
