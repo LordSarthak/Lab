@@ -22,7 +22,11 @@ const VacantLabs = () => {
         .filter(b => new Date(b.start).toDateString() === today)
         .map(b => b.title);
 
-    const vacantLabs = labs.filter(lab => !bookedLabs.includes(lab.name));
+    const vacantLabs = labs.filter(
+        lab =>
+            lab.status === "Available" &&
+            !bookedLabs.includes(lab.name)
+    );
 
     return (
         <div className="lab-status-container">

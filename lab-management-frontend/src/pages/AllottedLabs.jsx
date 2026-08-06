@@ -4,10 +4,12 @@ import './LabStatus.css';
 
 const AllottedLabs = () => {
     const [bookings, setBookings] = useState([]);
+    const [labs, setLabs] = useState([]);
     const [darkMode, setDarkMode] = useState(false);
 
     useEffect(() => {
         api.get('/bookings').then(res => setBookings(res.data));
+        api.get('/labs').then(res => setLabs(res.data));
     }, []);
 
     // const toggleDark = () => {
@@ -16,9 +18,22 @@ const AllottedLabs = () => {
     // };
 
     const today = new Date().toDateString();
-    const todaysLabs = [...new Set(
-        bookings.filter(b => new Date(b.start).toDateString() === today).map(b => b.title)
-    )];
+
+    // Labs booked today
+    const bookedLabs = bookings
+        .filter(b => new Date(b.start).toDateString() === today)
+        .map(b => b.title);
+
+    // Labs manually marked Occupied
+    const occupiedLabs = labs
+        .filter(lab => lab.status === "Occupied")
+        .map(lab => lab.name);
+
+    // Combine both and remove duplicates
+    const todaysLabs = [...new Set([
+        ...bookedLabs,
+        ...occupiedLabs
+    ])];
 
     return (
         <div className="lab-status-container">
