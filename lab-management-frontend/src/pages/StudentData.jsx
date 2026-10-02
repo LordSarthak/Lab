@@ -3,91 +3,176 @@ import api from '../api';
 import TableWithPagination from '../components/TableWithPagination';
 import ModalForm from '../components/ModalForm';
 import { ExportToCSV } from '../components/ExportToCSV';
-import './StudentData.css';
+import RequestState, { getRequestErrorMessage } from '../components/RequestState';
+import ImportDataModal from '../components/ImportDataModal';
+import { Upload } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import './RecordPages.css';
 
 const StudentData = () => {
     const [students, setStudents] = useState([]);
+    const [departments, setDepartments] = useState([]);
+    const [courses, setCourses] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [editingStudent, setEditingStudent] = useState(null);
     const [studentToConfirm, setStudentToConfirm] = useState(null);
     const [toastMessage, setToastMessage] = useState('');
+    const [loading, setLoading] = useState(true);
+    const [loadError, setLoadError] = useState(null);
+    const [actionError, setActionError] = useState(null);
+    const [saving, setSaving] = useState(false);
+    const [showImport, setShowImport] = useState(false);
 
     useEffect(() => {
         fetchStudents();
     }, []);
 
     const fetchStudents = () => {
-        api.get('/students')
-            .then(res => setStudents(res.data))
-            .catch(err => console.error("Failed to fetch students", err));
+        setLoading(true);
+        setLoadError(null);
+        Promise.all([api.get('/students'), api.get('/departments'), api.get('/courses')])
+            .then(([studentResponse, departmentResponse, courseResponse]) => {
+                setStudents(studentResponse.data);
+                setDepartments(departmentResponse.data);
+                setCourses(courseResponse.data);
+            })
+            .catch(setLoadError)
+            .finally(() => setLoading(false));
     };
 
     const handleFormSubmit = (student) => {
-        if (!student.name || !student.email || !student.rollNumber || !student.department) {
+        const email = student.email?.trim();
+        const rollNumber = String(student.rollNumber ?? '').trim();
+        const courseName = String(student.course ?? '').trim();
+        if (!student.name?.trim() || !email || !rollNumber || !student.department?.trim()) {
             alert("Please fill in all required fields.");
             return;
         }
 
-        // ✅ Check email format
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(student.email)) {
+        if (!emailRegex.test(email)) {
             alert("Please enter a valid email address.");
             return;
         }
 
-        // 🔒 Check if roll number already exists
-        const duplicate = students.find(s => s.rollNumber === student.rollNumber && (!editingStudent || s._id !== editingStudent._id));
+        const duplicateEmail = students.find(s =>
+            s.email?.trim().toLowerCase() === email.toLowerCase() &&
+            (!editingStudent || s._id !== editingStudent._id)
+        );
+        if (duplicateEmail) {
+            alert("A student with this email address already exists.");
+            return;
+        }
+
+        const duplicate = students.find(s =>
+            String(s.rollNumber ?? '').trim().toLowerCase() === rollNumber.toLowerCase() &&
+            (!editingStudent || s._id !== editingStudent._id)
+        );
         if (duplicate) {
             alert("A student with this roll number already exists.");
             return;
         }
 
-        setStudentToConfirm(student);
+        const selectedCourse = courses.find(course => course.name.toLowerCase() === courseName.toLowerCase());
+        if (courseName && !selectedCourse) {
+            alert('Choose a course from the course list.');
+            return;
+        }
+        if (selectedCourse && selectedCourse.department.toLowerCase() !== student.department.trim().toLowerCase()) {
+            alert('The selected course does not belong to the selected department.');
+            return;
+        }
+
+        setStudentToConfirm({ ...student, email, rollNumber, course: selectedCourse?.name || '' });
     };
 
 
 
-    const handleConfirmSave = () => {
-        const request = editingStudent
-            ? api.put(`/students/${editingStudent._id}`, studentToConfirm)
-            : api.post('/students', studentToConfirm);
-
-        request.then(() => {
+    const handleConfirmSave = async () => {
+        setSaving(true);
+        setActionError(null);
+        try {
+            if (editingStudent) {
+                await api.put(`/students/${editingStudent._id}`, studentToConfirm);
+            } else {
+                await api.post('/students', studentToConfirm);
+            }
             setShowModal(false);
             setEditingStudent(null);
             setStudentToConfirm(null);
             setToastMessage("✅ Student saved successfully!");
             fetchStudents();
             setTimeout(() => setToastMessage(''), 3000);
-        });
+        } catch (error) {
+            setActionError(getRequestErrorMessage(error));
+        } finally {
+            setSaving(false);
+        }
     };
 
-    const handleDelete = (student) => {
+    const handleDelete = async (student) => {
         if (window.confirm(`Delete "${student.name}"?`)) {
-            api.delete(`/students/${student._id}`).then(fetchStudents);
+            setActionError(null);
+            try {
+                await api.delete(`/students/${student._id}`);
+                fetchStudents();
+            } catch (error) {
+                setActionError(getRequestErrorMessage(error));
+            }
         }
     };
 
     const columns = [
-        { key: 'serial', label: 'ID' },  // 👈 Show serial number
+        { key: 'serial', label: 'ID' },
         { key: 'name', label: 'Name' },
         { key: 'email', label: 'Email' },
         { key: 'rollNumber', label: 'Roll Number' },
-        { key: 'department', label: 'Department' }
+        { key: 'department', label: 'Department' },
+        { key: 'course', label: 'Course' }
+    ];
+
+    const departmentOptions = [...new Set([
+        ...departments.map(department => department.name),
+        editingStudent?.department,
+    ].filter(Boolean))];
+    const courseOptions = [
+        { value: '', label: 'No course assigned' },
+        ...courses.map(course => ({
+            value: course.name,
+            label: `${course.name} (${course.code}) · ${course.department}`,
+        })),
+        ...(editingStudent?.course && !courses.some(course => course.name === editingStudent.course)
+            ? [{ value: editingStudent.course, label: `${editingStudent.course} (not in course catalog)` }]
+            : []),
     ];
 
     return (
         <div className="students-data-page">
             <div className="page-header">
-                <h2>Students Data</h2>
+                <div className="page-heading">
+                    <p className="page-kicker">CAMPUS DIRECTORY</p>
+                    <h1>Student Data</h1>
+                    <p>Maintain student records used for laboratory administration.</p>
+                </div>
                 <div style={{ display: 'flex', gap: '10px' }}>
                     <button onClick={() => { setEditingStudent(null); setShowModal(true); }}>➕ Add Student</button>
+                    <button onClick={() => setShowImport(true)}><Upload size={15} aria-hidden="true" /> Import</button>
                     <ExportToCSV data={students} filename="students.csv" />
                 </div>
             </div>
 
+            <p className="catalog-prerequisite">
+                Academic structure: <Link to="/departments">Departments</Link> · <Link to="/courses">Courses</Link>
+            </p>
+
+            {showImport && <ImportDataModal resource="students" title="students" onClose={() => setShowImport(false)} onImported={fetchStudents} />}
+
+            <RequestState loading={loading} error={loadError} onRetry={fetchStudents} loadingMessage="Loading student records..." />
+            {actionError && <RequestState error={actionError} />}
+            {saving && <RequestState loading loadingMessage="Saving student record..." />}
+
             <TableWithPagination
-                data={students.map((student, index) => ({ ...student, serial: index + 1 }))} // 👈 Add serial
+                data={students.map((student, index) => ({ ...student, serial: index + 1 }))}
                 columns={columns}
                 onEdit={(student) => { setEditingStudent(student); setShowModal(true); }}
                 onDelete={handleDelete}
@@ -96,12 +181,18 @@ const StudentData = () => {
             <ModalForm
                 title={editingStudent ? 'Edit Student' : 'Add Student'}
                 fields={[
-                    { name: 'name', label: 'Name', type: 'text' },           // ✅ text
-                    { name: 'email', label: 'Email', type: 'email' },         // ✅ email
-                    { name: 'rollNumber', label: 'Roll Number', type: 'number' }, // ✅ number
-                    { name: 'department', label: 'Department', type: 'text' } // ✅ text
+                    { name: 'name', label: 'Name', type: 'text' },
+                    { name: 'email', label: 'Email', type: 'email' },
+                    { name: 'rollNumber', label: 'Roll Number', type: 'text' },
+                    {
+                        name: 'department',
+                        label: 'Department',
+                        type: departments.length ? 'select' : 'text',
+                        options: departmentOptions,
+                    },
+                    { name: 'course', label: 'Course (optional)', type: 'select', options: courseOptions, required: false },
                 ]}
-                initialData={editingStudent ? { ...editingStudent, _id: undefined } : {}}
+                initialData={editingStudent ? { ...editingStudent, course: editingStudent.course || '', _id: undefined } : { course: '' }}
                 onSubmit={handleFormSubmit}
                 onClose={() => setShowModal(false)}
                 show={showModal}
@@ -116,6 +207,7 @@ const StudentData = () => {
                         <p><strong>Email:</strong> {studentToConfirm.email}</p>
                         <p><strong>Roll Number:</strong> {studentToConfirm.rollNumber}</p>
                         <p><strong>Department:</strong> {studentToConfirm.department}</p>
+                        {studentToConfirm.course && <p><strong>Course:</strong> {studentToConfirm.course}</p>}
                         <div style={{ marginTop: '10px' }}>
                             <button onClick={handleConfirmSave}>✅ Confirm & Save</button>
                             <button onClick={() => setStudentToConfirm(null)} style={{ marginLeft: '10px' }}>❌ Cancel</button>

@@ -3,32 +3,30 @@ from flask_cors import CORS
 from pymongo import MongoClient
 import config
 
-# Route Blueprints
 from routes.labs import labs_bp
 from routes.students import students_bp
 from routes.bookings import bookings_bp
+from routes.departments import departments_bp
+from routes.courses import courses_bp
 
 app = Flask(__name__)
 
-# ✅ Prevent Flask from redirecting /labs to /labs/
+# Avoid redirects between collection URLs with and without a trailing slash.
 app.url_map.strict_slashes = False
 
-# ✅ CORS configuration for frontend access
-CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}}, supports_credentials=True)
+CORS(app, resources={r"/*": {"origins": r"^http://(localhost|127\.0\.0\.1)(:\d+)?$"}})
 
-# ✅ MongoDB connection
-client = MongoClient(config.MONGO_URI)  # Must include /lab_management
-db = client["lab_management"]           # Access DB directly (prevents redirect)
+client = MongoClient(config.MONGO_URI)
+db = client["lab_management"]
 
-# ✅ Share DB with route files via app config
 app.config['DB'] = db
 
-# ✅ Register route blueprints
 app.register_blueprint(labs_bp, url_prefix='/labs')
 app.register_blueprint(students_bp, url_prefix='/students')
 app.register_blueprint(bookings_bp, url_prefix='/bookings')
+app.register_blueprint(departments_bp, url_prefix='/departments')
+app.register_blueprint(courses_bp, url_prefix='/courses')
 
-# ✅ Optional: Mongo health check
 @app.route('/ping-db', methods=['GET'])
 def ping_db():
     try:
@@ -37,6 +35,5 @@ def ping_db():
     except Exception as e:
         return {"status": "error", "message": str(e)}, 500
 
-# ✅ Start the server
 if __name__ == '__main__':
     app.run(debug=True)

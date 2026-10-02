@@ -1,0 +1,146 @@
+.import-modal-backdrop {
+    position: fixed;
+    z-index: 1300;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 18px;
+    background: rgba(18, 35, 28, 0.58);
+    backdrop-filter: blur(3px);
+}
+
+.import-modal {
+    width: min(100%, 470px);
+    padding: 23px;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+.import-modal-heading,
+.import-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.import-modal-heading h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.import-close {
+    display: grid;
+    width: 34px;
+    height: 34px;
+    place-items: center;
+    color: var(--ink);
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.import-file-picker {
+    display: grid;
+    justify-items: center;
+    gap: 8px;
+    margin-top: 22px;
+    padding: 25px 14px;
+    color: var(--green-deep);
+    background: var(--green-soft);
+    border: 1px dashed #9bb9a5;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.import-file-picker span {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    font-size: 13px;
+    font-weight: 650;
+}
+
+.import-file-picker small,
+.import-note,
+.import-summary {
+    color: #5b6b62;
+    font-size: 12px;
+    line-height: 1.55;
+}
+
+.import-file-picker input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    clip-path: inset(50%);
+}
+
+.import-note {
+    margin: 13px 0 18px;
+}
+
+.import-error {
+    color: #843d35;
+    font-size: 12px;
+}
+
+.import-actions {
+    justify-content: flex-end;
+}
+
+.import-actions button,
+.import-submit {
+    min-height: 37px;
+    padding: 0 12px;
+    color: #4c5d54;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 650;
+    cursor: pointer;
+}
+
+.import-actions .import-submit,
+.import-summary .import-submit {
+    color: #fff;
+    background: var(--green);
+    border-color: var(--green);
+}
+
+.import-actions button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.import-summary {
+    margin-top: 20px;
+}
+
+.import-summary p {
+    overflow-wrap: anywhere;
+}
+
+.import-summary ul {
+    max-height: 180px;
+    padding-left: 20px;
+    overflow: auto;
+}
+
+.import-summary li {
+    margin: 5px 0;
+}
+
+.import-summary .import-submit {
+    float: right;
+}

@@ -1,21 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import api from '../api';
+import React from 'react';
+import { CircleCheck, FlaskConical } from 'lucide-react';
+import RequestState from '../components/RequestState';
+import useLabSchedule from '../hooks/useLabSchedule';
 import './LabStatus.css';
 
 const VacantLabs = () => {
-    const [labs, setLabs] = useState([]);
-    const [bookings, setBookings] = useState([]);
-    const [darkMode, setDarkMode] = useState(false);
-
-    useEffect(() => {
-        api.get('/labs').then(res => setLabs(res.data));
-        api.get('/bookings').then(res => setBookings(res.data));
-    }, []);
-
-    // const toggleDark = () => {
-    //     setDarkMode(prev => !prev);
-    //     document.body.classList.toggle('dark-mode');
-    // };
+    const { labs, bookings, loading, error, retry } = useLabSchedule();
 
     const today = new Date().toDateString();
     const bookedLabs = bookings
@@ -29,22 +19,36 @@ const VacantLabs = () => {
     );
 
     return (
-        <div className="lab-status-container">
-            {/* <button className="toggle-btn" onClick={toggleDark}>
-                {darkMode ? '☀️ Light Mode' : '🌙 Dark Mode'}
-            </button> */}
-            <h2 className="lab-status-title">Vacant Labs Today</h2>
-            {vacantLabs.length > 0 ? (
-                <ul className="lab-list">
-                    {vacantLabs.map((lab) => (
-                        <li key={lab._id}>
-                            {lab.name}
-                            <span className="lab-badge badge-green">Available</span>
-                        </li>
-                    ))}
-                </ul>
-            ) : (
-                <p className="empty-message">All labs are booked today.</p>
+        <div className="lab-status-page">
+            <div className="page-heading">
+                <p className="page-kicker">FACILITY STATUS</p>
+                <h1>Vacant labs</h1>
+                <p>Rooms marked available that have no booking scheduled for today.</p>
+            </div>
+            <RequestState
+                loading={loading}
+                error={error}
+                onRetry={retry}
+                loadingMessage="Checking today's availability..."
+            />
+            {!loading && !error && (
+                <>
+                    <div className="lab-status-summary">
+                        <CircleCheck size={18} aria-hidden="true" />
+                        <strong>{vacantLabs.length} available {vacantLabs.length === 1 ? 'lab' : 'labs'}</strong>
+                        <span>{new Date().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long' })}</span>
+                    </div>
+                    {vacantLabs.length ? (
+                        <ul className="lab-list">
+                            {vacantLabs.map((lab) => (
+                                <li key={lab._id}>
+                                    <span className="lab-name"><FlaskConical size={17} aria-hidden="true" />{lab.name}</span>
+                                    <span className="lab-badge badge-available">Available</span>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : <p className="empty-message">No labs are available for new bookings today.</p>}
+                </>
             )}
         </div>
     );

@@ -1,3 +1,7 @@
 Flask
 Flask-CORS
 Flask-SQLAlchemy
+pymongo
+pandas
+openpyxl
+xlrd

@@ -20,14 +20,11 @@ const localizer = dateFnsLocalizer({
 });
 
 const BookingCalendar = ({ bookings }) => {
-    const events = bookings.map((booking) => {
-        const [startHour, endHour] = booking.slot.split(' - ');
-        return {
-            title: `Lab ${booking.labId} (Student ${booking.studentId})`,
-            start: new Date(`${booking.date}T${startHour}:00`),
-            end: new Date(`${booking.date}T${endHour}:00`),
-        };
-    });
+    const events = bookings.map((booking) => ({
+        title: booking.title,
+        start: new Date(booking.start),
+        end: new Date(booking.end),
+    }));
 
     return (
         <div className="calendar-container">

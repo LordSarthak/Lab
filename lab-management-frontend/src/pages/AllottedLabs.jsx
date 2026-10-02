@@ -1,57 +1,58 @@
-import React, { useEffect, useState } from 'react';
-import api from '../api';
+import React from 'react';
+import { CalendarDays, FlaskConical } from 'lucide-react';
+import RequestState from '../components/RequestState';
+import useLabSchedule from '../hooks/useLabSchedule';
 import './LabStatus.css';
 
 const AllottedLabs = () => {
-    const [bookings, setBookings] = useState([]);
-    const [labs, setLabs] = useState([]);
-    const [darkMode, setDarkMode] = useState(false);
-
-    useEffect(() => {
-        api.get('/bookings').then(res => setBookings(res.data));
-        api.get('/labs').then(res => setLabs(res.data));
-    }, []);
-
-    // const toggleDark = () => {
-    //     setDarkMode(prev => !prev);
-    //     document.body.classList.toggle('dark-mode');
-    // };
+    const { bookings, labs, loading, error, retry } = useLabSchedule();
 
     const today = new Date().toDateString();
-
-    // Labs booked today
     const bookedLabs = bookings
         .filter(b => new Date(b.start).toDateString() === today)
         .map(b => b.title);
-
-    // Labs manually marked Occupied
     const occupiedLabs = labs
         .filter(lab => lab.status === "Occupied")
         .map(lab => lab.name);
-
-    // Combine both and remove duplicates
-    const todaysLabs = [...new Set([
-        ...bookedLabs,
-        ...occupiedLabs
-    ])];
+    const todaysLabs = [...new Set([...bookedLabs, ...occupiedLabs])];
 
     return (
-        <div className="lab-status-container">
-            {/* <button className="toggle-btn" onClick={toggleDark}>
-                {darkMode ? '☀️ Light Mode' : '🌙 Dark Mode'}
-            </button> */}
-            <h2 className="lab-status-title">Labs Allotted Today</h2>
-            {todaysLabs.length > 0 ? (
-                <ul className="lab-list">
-                    {todaysLabs.map((lab, index) => (
-                        <li key={index}>
-                            {lab}
-                            <span className="lab-badge badge-red">Allotted</span>
-                        </li>
-                    ))}
-                </ul>
-            ) : (
-                <p className="empty-message">No labs allotted today.</p>
+        <div className="lab-status-page">
+            <div className="page-heading">
+                <p className="page-kicker">FACILITY STATUS</p>
+                <h1>Allotted labs</h1>
+                <p>Today’s scheduled bookings and rooms marked occupied in the lab directory.</p>
+            </div>
+            <RequestState
+                loading={loading}
+                error={error}
+                onRetry={retry}
+                loadingMessage="Checking today's lab status..."
+            />
+            {!loading && !error && (
+                <>
+                    <div className="lab-status-summary">
+                        <CalendarDays size={18} aria-hidden="true" />
+                        <strong>{new Date().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long' })}</strong>
+                        <span>{todaysLabs.length} {todaysLabs.length === 1 ? 'lab' : 'labs'} allotted</span>
+                    </div>
+                    {todaysLabs.length ? (
+                        <ul className="lab-list">
+                            {todaysLabs.map((lab) => {
+                                const scheduled = bookedLabs.includes(lab);
+                                const manuallyOccupied = occupiedLabs.includes(lab);
+                                return (
+                                    <li key={lab}>
+                                        <span className="lab-name"><FlaskConical size={17} aria-hidden="true" />{lab}</span>
+                                        <span className={`lab-badge ${scheduled ? 'badge-booked' : 'badge-occupied'}`}>
+                                            {scheduled && manuallyOccupied ? 'Booked · Occupied' : scheduled ? 'Booked today' : 'Marked occupied'}
+                                        </span>
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    ) : <p className="empty-message">No labs are allotted today.</p>}
+                </>
             )}
         </div>
     );

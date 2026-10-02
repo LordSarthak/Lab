@@ -1,11 +1,74 @@
-* {
-    margin: 0;
-    padding: 0;
+:root {
+    --ink: #1d2b27;
+    --muted: #697873;
+    --canvas: #f3f6f3;
+    --surface: #ffffff;
+    --surface-raised: #fbfcfa;
+    --line: #dce5df;
+    --green: #246c52;
+    --green-deep: #174c3a;
+    --green-soft: #e8f2eb;
+    --gold: #d9a83e;
+    --gold-soft: #fbf3df;
+    --red: #b94c43;
+    --red-soft: #f9e9e7;
+    --shadow: 0 14px 38px rgba(33, 54, 44, 0.07);
+    --radius: 8px;
+    --font-body: "Segoe UI", "Aptos", sans-serif;
+    --font-display: "Palatino Linotype", "Book Antiqua", Georgia, serif;
+}
+
+*,
+*::before,
+*::after {
     box-sizing: border-box;
 }
 
+html {
+    min-width: 320px;
+    background: var(--canvas);
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f3f4f6;
-    color: #333;
+    min-width: 320px;
+    min-height: 100vh;
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--font-body);
+    background-color: var(--canvas);
+    background-image: radial-gradient(#dce5df 0.7px, transparent 0.7px);
+    background-size: 18px 18px;
+    -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+button {
+    color: inherit;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: 3px solid rgba(36, 108, 82, 0.28);
+    outline-offset: 2px;
+}
+
+a {
+    color: inherit;
+}
+
+#root {
+    min-height: 100vh;
+}
+
+::selection {
+    color: var(--green-deep);
+    background: #d8eadf;
 }
