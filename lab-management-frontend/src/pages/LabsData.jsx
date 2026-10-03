@@ -70,6 +70,7 @@ const LabsData = () => {
 
 
     const handleConfirmSave = async () => {
+        if (saving) return;
         setSaving(true);
         setActionError(null);
         try {
@@ -152,7 +153,7 @@ const LabsData = () => {
                             "ORACLE VM VIRTUAL BOX", "CISCO PACKET TRACER", "XCODE", "ADOBE READER XI","AUTOCAD 2024", 
                             "LINUX (UBUNTU - CMD BASED)", "WINRAR", "NODEJS", "ECLIPCE IDE","LINUX - UBUNTU", "TABLEAU", "MATLAB R2024b"]}
                 ]}
-                initialData={editingLab ? { ...editingLab, occupiedSeats: editingLab.occupiedSeats ?? (editingLab.status === 'Occupied' ? editingLab.equipmentCount : 0), _id: undefined } : { software: [], occupiedSeats: 0, status: 'Available' }}
+                initialData={editingLab ? { ...editingLab, occupiedSeats: editingLab.occupiedSeats ?? (editingLab.status === 'Occupied' ? editingLab.equipmentCount : 0), _id: undefined } : { software: [], occupiedSeats: 0, status: '' }}
                 onSubmit={handleFormSubmit}
                 onClose={() => setShowModal(false)}
                 show={showModal}
@@ -160,18 +161,30 @@ const LabsData = () => {
 
             {labToConfirm && (
                 <div className="confirmation-modal">
-                    <div className="modal-content">
-                        <h3>Confirm Lab Details</h3>
+                    <form
+                        className="modal-content"
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby="lab-confirm-title"
+                        onSubmit={(event) => { event.preventDefault(); handleConfirmSave(); }}
+                        onKeyDown={(event) => {
+                            if (event.key === 'Enter' && event.target.type !== 'button') {
+                                event.preventDefault();
+                                event.currentTarget.requestSubmit();
+                            }
+                        }}
+                    >
+                        <h3 id="lab-confirm-title">Confirm Lab Details</h3>
                         <p><strong>Name:</strong> {labToConfirm.name}</p>
                         <p><strong>Computers:</strong> {labToConfirm.equipmentCount}</p>
                         <p><strong>Occupied seats:</strong> {labToConfirm.occupiedSeats}</p>
                         <p><strong>Status:</strong> {labToConfirm.status}</p>
                         <p><strong>Software:</strong> {Array.isArray(labToConfirm.software) ? labToConfirm.software.join(', ') : ''}</p>
                         <div className="confirmation-actions">
-                            <button onClick={handleConfirmSave}>✅ Confirm & Save</button>
-                            <button onClick={() => setLabToConfirm(null)}>❌ Cancel</button>
+                            <button type="submit" autoFocus disabled={saving}>✅ Confirm &amp; Save</button>
+                            <button type="button" onClick={() => setLabToConfirm(null)} disabled={saving}>❌ Cancel</button>
                         </div>
-                    </div>
+                    </form>
                 </div>
             )}
 

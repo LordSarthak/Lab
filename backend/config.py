@@ -1,1 +1,5 @@
-MONGO_URI = "mongodb://localhost:27017/lab_management"
+import os
+
+
+MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
+MONGO_DB_NAME = os.getenv("MONGO_DB_NAME", "lab_management")

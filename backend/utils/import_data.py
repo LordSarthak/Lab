@@ -11,8 +11,8 @@ FIELD_ALIASES = {
         "name": ("name", "student name", "full name"),
         "email": ("email", "email address", "email id"),
         "rollNumber": ("roll number", "roll no", "rollnumber", "rollno", "student id", "admission number"),
-        "department": ("department", "branch", "course", "program"),
-        "course": ("course name", "degree program"),
+        "department": ("department", "branch", "program"),
+        "course": ("course", "course name", "degree program"),
     },
     "labs": {
         "name": ("lab name", "name", "room name", "room"),
@@ -35,7 +35,7 @@ FIELD_ALIASES = {
 }
 
 REQUIRED_FIELDS = {
-    "students": ("name", "email", "rollNumber", "department"),
+    "students": ("name", "email", "rollNumber", "department", "course"),
     "labs": ("name", "equipmentCount"),
     "departments": ("name", "code"),
     "courses": ("name", "code", "department", "credits"),

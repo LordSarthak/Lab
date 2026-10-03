@@ -283,6 +283,188 @@
     background: var(--green);
 }
 
+.desktopControls .reset-booking-filters {
+    color: var(--green-deep);
+}
+
+.booking-filter-summary {
+    margin: -7px 0 0;
+    color: #65756c;
+    font-size: 12px;
+}
+
+.timetable-settings {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 14px;
+    padding: 15px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 7px;
+}
+
+.timetable-settings > div:first-child {
+    flex: 1 1 100%;
+}
+
+.timetable-settings h2 {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 17px;
+}
+
+.timetable-settings p {
+    margin: 4px 0 0;
+    color: #65756c;
+    font-size: 12px;
+}
+
+.timetable-settings label {
+    display: grid;
+    gap: 5px;
+    color: #405148;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.timetable-settings input,
+.timetable-settings select {
+    min-width: 145px;
+    min-height: 36px;
+    padding: 6px 9px;
+    color: var(--ink);
+    background: #fff;
+    border: 1px solid #cbd7cf;
+    border-radius: 5px;
+    font-size: 12px;
+}
+
+.timetable-settings .timetable-settings-note {
+    flex: 1 1 100%;
+    margin: -4px 0 0;
+    padding-top: 9px;
+    border-top: 1px solid var(--line);
+}
+
+.timetable-slot-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.timetable-slot-actions button {
+    min-height: 36px;
+    padding: 0 11px;
+    color: var(--green-deep);
+    background: var(--green-soft);
+    border: 1px solid #bfd5c7;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 650;
+    cursor: pointer;
+}
+
+.timetable-intervals {
+    display: grid;
+    flex: 1 1 100%;
+    gap: 8px;
+}
+
+.timetable-intervals-heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px;
+    padding-bottom: 3px;
+    color: var(--ink);
+    font-size: 12px;
+}
+
+.timetable-intervals-heading span {
+    color: #65756c;
+    font-size: 11px;
+    font-weight: 400;
+}
+
+.timetable-interval-row {
+    display: grid;
+    grid-template-columns: minmax(52px, auto) minmax(115px, 150px) minmax(115px, 150px) minmax(145px, 1fr) 34px;
+    align-items: end;
+    gap: 10px;
+    padding: 9px;
+    background: #f8faf8;
+    border: 1px solid #e7ede8;
+    border-radius: 5px;
+}
+
+.timetable-interval-number {
+    align-self: center;
+    color: #65756c;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.timetable-interval-enabled {
+    display: flex !important;
+    align-items: center;
+    align-self: center;
+    gap: 7px !important;
+    min-height: 36px;
+}
+
+.timetable-interval-enabled input[type="checkbox"] {
+    min-width: 0;
+    min-height: 0;
+    accent-color: var(--green);
+}
+
+.timetable-interval-remove {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 36px;
+    color: #a63832;
+    background: #fff;
+    border: 1px solid #ecd3d1;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.timetable-interval-remove:hover {
+    color: #fff;
+    background: #a63832;
+}
+
+.timetable-settings-actions {
+    display: flex;
+    gap: 7px;
+}
+
+.timetable-settings-actions button {
+    min-height: 36px;
+    padding: 0 11px;
+    color: #fff;
+    background: var(--green);
+    border: 1px solid var(--green);
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 650;
+    cursor: pointer;
+}
+
+.timetable-settings-actions button:last-child {
+    color: #4c5d54;
+    background: #fff;
+    border-color: var(--line);
+}
+
+.timetable-settings-actions button:disabled {
+    opacity: 0.55;
+    cursor: wait;
+}
+
 .booking-page .rbc-calendar {
     min-width: 0;
     padding: 12px;
@@ -581,5 +763,24 @@
 
     .modalContent {
         padding: 18px;
+    }
+
+    .timetable-interval-row {
+        grid-template-columns: 1fr 1fr 36px;
+        align-items: end;
+    }
+
+    .timetable-interval-number {
+        grid-column: 1 / -1;
+    }
+
+    .timetable-interval-enabled {
+        grid-column: 1 / 3;
+        grid-row: 3;
+    }
+
+    .timetable-interval-remove {
+        grid-column: 3;
+        grid-row: 3;
     }
 }

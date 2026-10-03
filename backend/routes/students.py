@@ -39,7 +39,7 @@ def validate_course_assignment(course_name, department):
         return None, "The selected course does not belong to the selected department."
     return course["name"], None
 
-def validate_student_data(data):
+def validate_student_data(data, existing_student=None):
     if not isinstance(data, dict):
         return None, "Student details must be an object."
 
@@ -55,7 +55,29 @@ def validate_student_data(data):
         return None, "Roll number is required."
     if not isinstance(department, str) or not department.strip():
         return None, "Department is required."
-    course, error = validate_course_assignment(data.get("course", ""), department)
+    selected_department = current_app.config["DB"]["departments"].find_one({
+        "name": {"$regex": f"^{re.escape(department.strip())}$", "$options": "i"}
+    })
+    is_unchanged_legacy_department = (
+        existing_student
+        and not selected_department
+        and department.strip().casefold() == existing_student.get("department", "").strip().casefold()
+    )
+    if not selected_department and not is_unchanged_legacy_department:
+        return None, "Choose a department from the department list."
+    department_name = selected_department["name"] if selected_department else existing_student["department"]
+    course_value = data.get("course")
+    if not isinstance(course_value, str) or not course_value.strip():
+        return None, "Choose a course from the selected department."
+    course, error = validate_course_assignment(course_value, department_name)
+    is_unchanged_legacy_course = (
+        existing_student
+        and not course
+        and course_value.strip().casefold() == existing_student.get("course", "").strip().casefold()
+        and department_name.casefold() == existing_student.get("department", "").strip().casefold()
+    )
+    if error and is_unchanged_legacy_course:
+        course, error = existing_student["course"], None
     if error:
         return None, error
 
@@ -63,7 +85,7 @@ def validate_student_data(data):
         "name": name.strip(),
         "email": email.strip(),
         "rollNumber": str(roll_number).strip(),
-        "department": department.strip(),
+        "department": department_name,
         "course": course,
     }, None
 
@@ -93,12 +115,17 @@ def import_students():
         roll_number = student["rollNumber"]
         department = student["department"]
         reason = None
-        if not all((name, email, roll_number, department)):
-            reason = "Name, email, roll number, and department are required."
+        course_name = student.get("course", "").strip()
+        if not all((name, email, roll_number, department, course_name)):
+            reason = "Name, email, roll number, department, and course are required."
         elif not re.fullmatch(r"[^\s@]+@[^\s@]+\.[^\s@]+", email):
             reason = "Invalid email address."
-        elif student.get("course") and validate_course_assignment(student["course"], department)[1]:
-            reason = validate_course_assignment(student["course"], department)[1]
+        elif not (selected_department := current_app.config["DB"]["departments"].find_one({
+            "name": {"$regex": f"^{re.escape(department)}$", "$options": "i"}
+        })):
+            reason = "Choose a department from the department list."
+        elif validate_course_assignment(course_name, selected_department["name"])[1]:
+            reason = validate_course_assignment(course_name, selected_department["name"])[1]
         elif roll_number.lower() in seen_roll_numbers or collection.find_one({"rollNumber": {"$regex": f"^{re.escape(roll_number)}$", "$options": "i"}}):
             reason = "Roll number already exists."
         elif email.lower() in seen_emails or duplicate_email(email):
@@ -108,8 +135,8 @@ def import_students():
             errors.append({"row": item["row"], "reason": reason})
             continue
 
-        if student.get("course"):
-            student["course"], _ = validate_course_assignment(student["course"], department)
+        student["department"] = selected_department["name"]
+        student["course"], _ = validate_course_assignment(course_name, student["department"])
         collection.insert_one(student)
         seen_roll_numbers.add(roll_number.lower())
         seen_emails.add(email.lower())
@@ -137,15 +164,16 @@ def add_student():
 
 @students_bp.route("/<id>", methods=["PUT"])
 def update_student(id):
-    data, error = validate_student_data(request.get_json(silent=True))
-    if error:
-        return jsonify({"message": error}), 400
     try:
         student_id = ObjectId(id)
     except Exception:
         return jsonify({"message": "Invalid student ID."}), 400
-    if not get_collection().find_one({"_id": student_id}):
+    existing_student = get_collection().find_one({"_id": student_id})
+    if not existing_student:
         return jsonify({"message": "Student not found."}), 404
+    data, error = validate_student_data(request.get_json(silent=True), existing_student)
+    if error:
+        return jsonify({"message": error}), 400
     if duplicate_email(data["email"], student_id):
         return jsonify({"message": "A student with this email address already exists."}), 409
     if duplicate_roll_number(data["rollNumber"], student_id):

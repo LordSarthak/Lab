@@ -25,6 +25,6 @@ jest.mock('react-router-dom', () => {
 
 test('renders the lab operations app shell', () => {
   render(<App />);
-  expect(screen.getByText('ACADEMIC SERVICES')).toBeInTheDocument();
+  expect(screen.getByText('ACADEMIC')).toBeInTheDocument();
   expect(screen.getByText('Lab operations')).toBeInTheDocument();
 });

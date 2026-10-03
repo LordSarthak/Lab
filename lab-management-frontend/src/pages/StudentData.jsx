@@ -44,8 +44,19 @@ const StudentData = () => {
         const email = student.email?.trim();
         const rollNumber = String(student.rollNumber ?? '').trim();
         const courseName = String(student.course ?? '').trim();
-        if (!student.name?.trim() || !email || !rollNumber || !student.department?.trim()) {
+        if (!student.name?.trim() || !email || !rollNumber || !student.department?.trim() || !courseName) {
             alert("Please fill in all required fields.");
+            return;
+        }
+        const selectedDepartment = departments.find(
+            department => department.name.toLowerCase() === student.department.trim().toLowerCase()
+        ) || (
+            editingStudent?.department?.toLowerCase() === student.department.trim().toLowerCase()
+                ? { name: editingStudent.department }
+                : null
+        );
+        if (!selectedDepartment) {
+            alert('Choose a department from the department list.');
             return;
         }
 
@@ -74,21 +85,25 @@ const StudentData = () => {
         }
 
         const selectedCourse = courses.find(course => course.name.toLowerCase() === courseName.toLowerCase());
-        if (courseName && !selectedCourse) {
+        const unchangedLegacyCourse = editingStudent &&
+            editingStudent.course?.toLowerCase() === courseName.toLowerCase() &&
+            editingStudent.department?.toLowerCase() === student.department.trim().toLowerCase();
+        if (!selectedCourse && !unchangedLegacyCourse) {
             alert('Choose a course from the course list.');
             return;
         }
-        if (selectedCourse && selectedCourse.department.toLowerCase() !== student.department.trim().toLowerCase()) {
+        if (selectedCourse && selectedCourse.department.toLowerCase() !== selectedDepartment.name.toLowerCase()) {
             alert('The selected course does not belong to the selected department.');
             return;
         }
 
-        setStudentToConfirm({ ...student, email, rollNumber, course: selectedCourse?.name || '' });
+        setStudentToConfirm({ ...student, email, rollNumber, department: selectedDepartment.name, course: selectedCourse?.name || editingStudent.course });
     };
 
 
 
     const handleConfirmSave = async () => {
+        if (saving) return;
         setSaving(true);
         setActionError(null);
         try {
@@ -131,17 +146,24 @@ const StudentData = () => {
         { key: 'course', label: 'Course' }
     ];
 
-    const departmentOptions = [...new Set([
-        ...departments.map(department => department.name),
-        editingStudent?.department,
-    ].filter(Boolean))];
-    const courseOptions = [
-        { value: '', label: 'No course assigned' },
-        ...courses.map(course => ({
-            value: course.name,
-            label: `${course.name} (${course.code}) · ${course.department}`,
-        })),
-        ...(editingStudent?.course && !courses.some(course => course.name === editingStudent.course)
+    const departmentOptions = [
+        { value: '', label: departments.length ? 'Choose a department' : 'No departments available' },
+        ...departments.map(department => ({ value: department.name, label: `${department.name} (${department.code})` })),
+        ...(editingStudent?.department && !departments.some(department => department.name === editingStudent.department)
+            ? [{ value: editingStudent.department, label: `${editingStudent.department} (not in department catalog)` }]
+            : []),
+    ];
+    const getCourseOptions = (formData) => [
+        { value: '', label: formData.department ? 'Select a course' : 'Choose a department first' },
+        ...courses
+            .filter(course => course.department === formData.department)
+            .map(course => ({
+                value: course.name,
+                label: `${course.name} (${course.code})`,
+            })),
+        ...(editingStudent?.course &&
+            editingStudent.department === formData.department &&
+            !courses.some(course => course.name === editingStudent.course && course.department === editingStudent.department)
             ? [{ value: editingStudent.course, label: `${editingStudent.course} (not in course catalog)` }]
             : []),
     ];
@@ -187,12 +209,17 @@ const StudentData = () => {
                     {
                         name: 'department',
                         label: 'Department',
-                        type: departments.length ? 'select' : 'text',
+                        type: 'select',
                         options: departmentOptions,
+                        disabled: departments.length === 0,
                     },
-                    { name: 'course', label: 'Course (optional)', type: 'select', options: courseOptions, required: false },
+                    { name: 'course', label: 'Course', type: 'select', options: getCourseOptions, dependsOn: 'department' },
                 ]}
-                initialData={editingStudent ? { ...editingStudent, course: editingStudent.course || '', _id: undefined } : { course: '' }}
+                initialData={editingStudent ? {
+                    ...editingStudent,
+                    course: editingStudent.course || '',
+                    _id: undefined,
+                } : { department: '', course: '' }}
                 onSubmit={handleFormSubmit}
                 onClose={() => setShowModal(false)}
                 show={showModal}
@@ -201,18 +228,30 @@ const StudentData = () => {
 
             {studentToConfirm && (
                 <div className="confirmation-modal">
-                    <div className="modal-content">
-                        <h3>Confirm Student Details</h3>
+                    <form
+                        className="modal-content"
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby="student-confirm-title"
+                        onSubmit={(event) => { event.preventDefault(); handleConfirmSave(); }}
+                        onKeyDown={(event) => {
+                            if (event.key === 'Enter' && event.target.type !== 'button') {
+                                event.preventDefault();
+                                event.currentTarget.requestSubmit();
+                            }
+                        }}
+                    >
+                        <h3 id="student-confirm-title">Confirm Student Details</h3>
                         <p><strong>Name:</strong> {studentToConfirm.name}</p>
                         <p><strong>Email:</strong> {studentToConfirm.email}</p>
                         <p><strong>Roll Number:</strong> {studentToConfirm.rollNumber}</p>
                         <p><strong>Department:</strong> {studentToConfirm.department}</p>
                         {studentToConfirm.course && <p><strong>Course:</strong> {studentToConfirm.course}</p>}
                         <div style={{ marginTop: '10px' }}>
-                            <button onClick={handleConfirmSave}>✅ Confirm & Save</button>
-                            <button onClick={() => setStudentToConfirm(null)} style={{ marginLeft: '10px' }}>❌ Cancel</button>
+                            <button type="submit" autoFocus disabled={saving}>✅ Confirm &amp; Save</button>
+                            <button type="button" onClick={() => setStudentToConfirm(null)} style={{ marginLeft: '10px' }}>❌ Cancel</button>
                         </div>
-                    </div>
+                    </form>
                 </div>
             )}
 

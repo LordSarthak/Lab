@@ -19,6 +19,22 @@ def serialize(course):
     return course
 
 
+def find_department(department_value):
+    department_collection = current_app.config["DB"]["departments"]
+    if not isinstance(department_value, str) or not department_value.strip():
+        return None
+
+    department_value = department_value.strip()
+    if ObjectId.is_valid(department_value):
+        department_record = department_collection.find_one({"_id": ObjectId(department_value)})
+        if department_record:
+            return department_record
+
+    return department_collection.find_one({
+        "name": {"$regex": f"^{re.escape(department_value)}$", "$options": "i"}
+    })
+
+
 def validate_course(data):
     if not isinstance(data, dict):
         return None, "Course details must be an object."
@@ -42,9 +58,7 @@ def validate_course(data):
     if not math.isfinite(credits) or credits <= 0:
         return None, "Credits must be a positive number."
 
-    department_record = current_app.config["DB"]["departments"].find_one({
-        "name": {"$regex": f"^{re.escape(department.strip())}$", "$options": "i"}
-    })
+    department_record = find_department(department)
     if not department_record:
         return None, "Choose a department from the department list."
 

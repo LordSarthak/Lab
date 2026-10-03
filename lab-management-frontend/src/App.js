@@ -30,7 +30,7 @@ const App = () => {
                     <header className="app-topbar">
                         <div className="app-context">
                             <span className="app-context-mark" />
-                            <span>ACADEMIC SERVICES</span>
+                            <span>ACADEMIC</span>
                             <span className="app-context-divider">/</span>
                             <strong>Lab operations</strong>
                         </div>

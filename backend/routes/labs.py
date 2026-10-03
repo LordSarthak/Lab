@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify, current_app
 from bson import ObjectId
 import re
 from utils.import_data import load_import_rows
+from utils.booking_locks import BookingLockTimeout, acquire_booking_locks, lab_lock_key
 
 labs_bp = Blueprint("labs", __name__)
 
@@ -151,18 +152,33 @@ def update_lab(id):
         object_id = ObjectId(id)
     except Exception:
         return jsonify({"message": "Invalid lab ID."}), 400
-    if not get_collection().find_one({"_id": object_id}):
+    existing = get_collection().find_one({"_id": object_id})
+    if not existing:
         return jsonify({"message": "Lab not found."}), 404
-    duplicate = get_collection().find_one({
-        "name": {"$regex": f"^{re.escape(data['name'])}$", "$options": "i"},
-        "_id": {"$ne": object_id},
-    })
-    if duplicate:
-        return jsonify({"message": "A lab with this name already exists."}), 409
-    result = get_collection().update_one({"_id": object_id}, {"$set": data})
-    if not result.matched_count:
-        return jsonify({"message": "Lab not found."}), 404
-    return jsonify({"message": "Lab updated"})
+    keys = {lab_lock_key(existing["name"]), lab_lock_key(data["name"])}
+    try:
+        with acquire_booking_locks(keys):
+            existing = get_collection().find_one({"_id": object_id})
+            if not existing:
+                return jsonify({"message": "Lab not found."}), 404
+            duplicate = get_collection().find_one({
+                "name": {"$regex": f"^{re.escape(data['name'])}$", "$options": "i"},
+                "_id": {"$ne": object_id},
+            })
+            if duplicate:
+                return jsonify({"message": "A lab with this name already exists."}), 409
+            result = get_collection().update_one({"_id": object_id}, {"$set": data})
+            if not result.matched_count:
+                return jsonify({"message": "Lab not found."}), 404
+            if existing["name"] != data["name"]:
+                current_app.config["DB"]["bookings"].update_many(
+                    {"title": existing["name"]},
+                    {"$set": {"title": data["name"]}},
+                )
+            return jsonify({"message": "Lab updated"})
+    except BookingLockTimeout:
+        return jsonify({"message": "This lab has active booking changes. Please retry shortly."}), 409
+
 
 @labs_bp.route("/<id>", methods=["DELETE"])
 def delete_lab(id):
@@ -170,7 +186,19 @@ def delete_lab(id):
         object_id = ObjectId(id)
     except Exception:
         return jsonify({"message": "Invalid lab ID."}), 400
-    result = get_collection().delete_one({"_id": object_id})
-    if not result.deleted_count:
+    lab = get_collection().find_one({"_id": object_id})
+    if not lab:
         return jsonify({"message": "Lab not found."}), 404
-    return jsonify({"message": "Lab deleted"})
+    try:
+        with acquire_booking_locks({lab_lock_key(lab["name"])}):
+            lab = get_collection().find_one({"_id": object_id})
+            if not lab:
+                return jsonify({"message": "Lab not found."}), 404
+            if current_app.config["DB"]["bookings"].find_one({"title": lab["name"]}):
+                return jsonify({"message": "Reassign or delete this lab's bookings before deleting it."}), 409
+            result = get_collection().delete_one({"_id": object_id})
+            if not result.deleted_count:
+                return jsonify({"message": "Lab not found."}), 404
+            return jsonify({"message": "Lab deleted"})
+    except BookingLockTimeout:
+        return jsonify({"message": "This lab has active booking changes. Please retry shortly."}), 409

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api';
 import { ExportToCSV } from '../components/ExportToCSV';
@@ -72,6 +72,7 @@ const CatalogDataPage = ({ kind }) => {
     const [editingRecord, setEditingRecord] = useState(null);
     const [recordToConfirm, setRecordToConfirm] = useState(null);
     const [toastMessage, setToastMessage] = useState('');
+    const [showDepartmentPrerequisite, setShowDepartmentPrerequisite] = useState(false);
     const [loading, setLoading] = useState(true);
     const [loadError, setLoadError] = useState(null);
     const [actionError, setActionError] = useState(null);
@@ -89,7 +90,10 @@ const CatalogDataPage = ({ kind }) => {
             .then(([recordsResponse, departmentsResponse]) => {
                 if (!isCurrent) return;
                 setRecords(recordsResponse.data);
-                if (isCourse) setDepartments(departmentsResponse.data);
+                if (isCourse) {
+                    setDepartments(departmentsResponse.data);
+                    if (departmentsResponse.data.length > 0) setShowDepartmentPrerequisite(false);
+                }
             })
             .catch(error => { if (isCurrent) setLoadError(error); })
             .finally(() => { if (isCurrent) setLoading(false); });
@@ -98,11 +102,29 @@ const CatalogDataPage = ({ kind }) => {
     }, [isCourse, reload]);
 
     const refresh = () => setReload(current => current + 1);
+    const handleAddRecord = () => {
+        if (isCourse && departments.length === 0) {
+            setShowDepartmentPrerequisite(true);
+            return;
+        }
+        setShowDepartmentPrerequisite(false);
+        setEditingRecord(null);
+        setShowModal(true);
+    };
+
     const fields = isCourse
         ? [
             { name: 'name', label: 'Course Name', type: 'text' },
             { name: 'code', label: 'Course Code', type: 'text' },
-            { name: 'department', label: 'Department', type: 'select', options: departments.map(department => department.name) },
+            {
+                name: 'department',
+                label: 'Department',
+                type: 'select',
+                options: departments.map(department => ({
+                    value: department._id,
+                    label: `${department.name}${department.code ? ` (${department.code})` : ''}`,
+                })),
+            },
             { name: 'credits', label: 'Credits', type: 'number', min: 0.5, step: 0.5 },
         ]
         : config.fields;
@@ -117,7 +139,11 @@ const CatalogDataPage = ({ kind }) => {
 
         let record = { name, code };
         if (isCourse) {
-            const department = departments.find(item => item.name.toLowerCase() === formData.department?.trim().toLowerCase());
+            const selectedDepartment = String(formData.department ?? '').trim();
+            const department = departments.find(item =>
+                String(item._id) === selectedDepartment ||
+                (typeof item.name === 'string' && item.name.toLowerCase() === selectedDepartment.toLowerCase())
+            );
             const credits = Number(formData.credits);
             if (!department) {
                 alert('Choose a department from the department list.');
@@ -132,19 +158,41 @@ const CatalogDataPage = ({ kind }) => {
             record.description = formData.description?.trim() || '';
         }
 
-        const duplicate = records.find(item =>
-            item._id !== editingRecord?._id &&
-            (item.code?.toLowerCase() === code.toLowerCase() || item.name?.toLowerCase() === name.toLowerCase())
+        const duplicateName = records.find(item =>
+            item._id !== editingRecord?._id && item.name?.trim().toLowerCase() === name.toLowerCase()
         );
-        if (duplicate) {
-            alert(`A ${config.itemName} with this name or code already exists.`);
+        if (duplicateName) {
+            alert(`${config.itemName[0].toUpperCase() + config.itemName.slice(1)} name "${name}" already exists. Enter a different name.`);
+            return;
+        }
+
+        const duplicateCode = records.find(item =>
+            item._id !== editingRecord?._id && item.code?.trim().toLowerCase() === code.toLowerCase()
+        );
+        if (duplicateCode) {
+            alert(`${config.itemName[0].toUpperCase() + config.itemName.slice(1)} code "${code}" is already in use. Enter a different code.`);
             return;
         }
 
         setRecordToConfirm(record);
     };
 
+    const initialData = useMemo(() => {
+        if (!editingRecord) return config.defaults;
+        if (!isCourse) return { ...editingRecord, _id: undefined };
+        const department = departments.find(item =>
+            typeof item.name === 'string' &&
+            item.name.toLowerCase() === String(editingRecord.department || '').toLowerCase()
+        );
+        return {
+            ...editingRecord,
+            department: department?._id || '',
+            _id: undefined,
+        };
+    }, [config.defaults, departments, editingRecord, isCourse]);
+
     const handleConfirmSave = async () => {
+        if (saving) return;
         setSaving(true);
         setActionError(null);
         try {
@@ -188,8 +236,8 @@ const CatalogDataPage = ({ kind }) => {
                 <div>
                     <button
                         type="button"
-                        onClick={() => { setEditingRecord(null); setShowModal(true); }}
-                        disabled={isCourse && departments.length === 0}
+                        onClick={handleAddRecord}
+                        disabled={isCourse && (loading || Boolean(loadError))}
                     >
                         + Add {config.itemName[0].toUpperCase() + config.itemName.slice(1)}
                     </button>
@@ -198,8 +246,8 @@ const CatalogDataPage = ({ kind }) => {
                 </div>
             </div>
 
-            {isCourse && departments.length === 0 && !loading && (
-                <p className="catalog-prerequisite">
+            {isCourse && departments.length === 0 && showDepartmentPrerequisite && (
+                <p className="catalog-prerequisite" role="alert">
                     Add a department before creating courses. <Link to="/departments">Manage departments</Link>
                 </p>
             )}
@@ -219,7 +267,7 @@ const CatalogDataPage = ({ kind }) => {
             <ModalForm
                 title={`${editingRecord ? 'Edit' : 'Add'} ${config.itemName[0].toUpperCase() + config.itemName.slice(1)}`}
                 fields={fields}
-                initialData={editingRecord ? { ...editingRecord, _id: undefined } : config.defaults}
+                initialData={initialData}
                 onSubmit={handleFormSubmit}
                 onClose={() => setShowModal(false)}
                 show={showModal}
@@ -227,16 +275,28 @@ const CatalogDataPage = ({ kind }) => {
 
             {recordToConfirm && (
                 <div className="confirmation-modal">
-                    <div className="modal-content" role="dialog" aria-modal="true" aria-labelledby="catalog-confirm-title">
+                    <form
+                        className="modal-content"
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby="catalog-confirm-title"
+                        onSubmit={(event) => { event.preventDefault(); handleConfirmSave(); }}
+                        onKeyDown={(event) => {
+                            if (event.key === 'Enter' && event.target.type !== 'button') {
+                                event.preventDefault();
+                                event.currentTarget.requestSubmit();
+                            }
+                        }}
+                    >
                         <h3 id="catalog-confirm-title">Confirm {config.itemName} details</h3>
                         {config.confirmationFields.map(([key, label]) => (
                             <p key={key}><strong>{label}:</strong> {recordToConfirm[key] || 'Not provided'}</p>
                         ))}
                         <div className="confirmation-actions">
-                            <button type="button" onClick={handleConfirmSave} disabled={saving}>Confirm &amp; Save</button>
+                            <button type="submit" autoFocus disabled={saving}>Confirm &amp; Save</button>
                             <button type="button" onClick={() => setRecordToConfirm(null)} disabled={saving}>Cancel</button>
                         </div>
-                    </div>
+                    </form>
                 </div>
             )}
 
