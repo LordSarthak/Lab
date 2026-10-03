@@ -172,7 +172,7 @@ const StudentData = () => {
         <div className="students-data-page">
             <div className="page-header">
                 <div className="page-heading">
-                    <p className="page-kicker">CAMPUS DIRECTORY</p>
+                    <p className="page-kicker">STUDENT RECORDS</p>
                     <h1>Student Data</h1>
                     <p>Maintain student records used for laboratory administration.</p>
                 </div>

@@ -129,3 +129,16 @@
         font-size: 9px;
     }
 }
+
+@media (max-width: 380px) {
+    .lab-list li {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .lab-status-summary {
+        gap: 8px;
+        font-size: 12px;
+    }
+}

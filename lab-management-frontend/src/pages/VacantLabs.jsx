@@ -1,5 +1,5 @@
 import React from 'react';
-import { CircleCheck, FlaskConical } from 'lucide-react';
+import { CalendarDays, FlaskConical } from 'lucide-react';
 import RequestState from '../components/RequestState';
 import useLabSchedule from '../hooks/useLabSchedule';
 import './LabStatus.css';
@@ -34,9 +34,9 @@ const VacantLabs = () => {
             {!loading && !error && (
                 <>
                     <div className="lab-status-summary">
-                        <CircleCheck size={18} aria-hidden="true" />
-                        <strong>{vacantLabs.length} available {vacantLabs.length === 1 ? 'lab' : 'labs'}</strong>
-                        <span>{new Date().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long' })}</span>
+                        <CalendarDays size={18} aria-hidden="true" />
+                        <strong>{new Date().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long' })}</strong>
+                        <span>{vacantLabs.length} {vacantLabs.length === 1 ? 'lab' : 'labs'} vacant</span>
                     </div>
                     {vacantLabs.length ? (
                         <ul className="lab-list">

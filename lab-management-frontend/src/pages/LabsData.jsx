@@ -117,7 +117,7 @@ const LabsData = () => {
         <div className="labs-data-page">
             <div className="page-header">
                 <div className="page-heading">
-                    <p className="page-kicker">FACILITY DIRECTORY</p>
+                    <p className="page-kicker">LAB DIRECTORY</p>
                     <h1>Labs</h1>
                     <p>Manage laboratory rooms, capacity, availability, and installed software.</p>
                 </div>

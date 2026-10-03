@@ -15,6 +15,20 @@ import './Booking.css';
 const locales = { 'en-US': require('date-fns/locale/en-US') };
 const localizer = dateFnsLocalizer({ format, parse, startOfWeek, getDay, locales });
 
+function CalendarBookingEvent({ event }) {
+    const details = [
+        event.course || event.department,
+        `${Number(event.seats) || 1} seat${(Number(event.seats) || 1) === 1 ? '' : 's'}`,
+    ].filter(Boolean);
+
+    return (
+        <div className="booking-event-copy">
+            <strong title={event.title}>{event.title}</strong>
+            <span>{details.join(' · ')}</span>
+        </div>
+    );
+}
+
 const defaultTimetableSettings = {
     startTime: '09:00',
     endTime: '16:00',
@@ -430,10 +444,13 @@ export default function Booking() {
             style: {
                 backgroundColor: 'var(--green)',
                 color: 'white',
-                borderRadius: '4px',
-                boxShadow: 'inset 4px 0 0 var(--gold)',
-                padding: '10px 8px 7px 12px',
-                fontSize: '13px',
+                border: '1px solid var(--green-deep)',
+                borderLeft: '4px solid var(--gold)',
+                borderRadius: '6px',
+                boxShadow: '0 2px 5px rgba(24, 55, 40, 0.14)',
+                padding: '7px 8px',
+                fontSize: '12px',
+                zIndex: 2,
             },
         };
     };
@@ -504,6 +521,21 @@ export default function Booking() {
                     </button>
                 </div>
             </div>
+
+            <section className="timetable-overview" aria-label="Timetable overview">
+                <div>
+                    <strong>{filteredEvents.length}</strong>
+                    <span>{filteredEvents.length === 1 ? 'booking shown' : 'bookings shown'}</span>
+                </div>
+                <div>
+                    <strong>{labs.length}</strong>
+                    <span>{labs.length === 1 ? 'lab' : 'labs'}</span>
+                </div>
+                <div>
+                    <strong>{activeTimetableSlots.length}</strong>
+                    <span>{activeTimetableSlots.length === 1 ? 'active interval' : 'active intervals'}</span>
+                </div>
+            </section>
 
             {(filteredDepartment !== 'All' || filteredCourse !== 'All' || filteredLab !== 'All') && (
                 <p className="booking-filter-summary" role="status">
@@ -716,27 +748,36 @@ export default function Booking() {
                 </section>
             )}
 
-            <Calendar
-                localizer={localizer}
-                events={filteredEvents}
-                defaultView="week"
-                view={calendarView}
-                onView={setCalendarView}
-                date={currentDate}
-                onNavigate={setCurrentDate}
-                views={['week', 'day']}
-                dayLayoutAlgorithm="no-overlap"
-                step={5}
-                timeslots={1}
-                selectable
-                style={{ height: '75vh' }}
-                min={minTime}
-                max={maxTime}
-                onSelectEvent={handleSelectEvent}
-                onSelectSlot={handleSelectSlot}
-                tooltipAccessor={event => [event.title, event.department, event.course].filter(Boolean).join(' · ')}
-                eventPropGetter={eventStyleGetter}
-            />
+            <section className="timetable-calendar-panel" aria-label="Booking calendar">
+                <header className="timetable-calendar-heading">
+                    <div>
+                        <h2>Booking calendar</h2>
+                        <p>Select a booking to edit it, or choose an available interval to add one.</p>
+                    </div>
+                </header>
+                <Calendar
+                    localizer={localizer}
+                    events={filteredEvents}
+                    defaultView="week"
+                    view={calendarView}
+                    onView={setCalendarView}
+                    date={currentDate}
+                    onNavigate={setCurrentDate}
+                    views={['week', 'day']}
+                    dayLayoutAlgorithm="no-overlap"
+                    step={5}
+                    timeslots={3}
+                    selectable
+                    style={{ height: 'clamp(360px, 75vh, 780px)' }}
+                    min={minTime}
+                    max={maxTime}
+                    onSelectEvent={handleSelectEvent}
+                    onSelectSlot={handleSelectSlot}
+                    tooltipAccessor={event => [event.title, event.department, event.course].filter(Boolean).join(' · ')}
+                    eventPropGetter={eventStyleGetter}
+                    components={{ event: CalendarBookingEvent }}
+                />
+            </section>
 
             {(selectedSlot || selectedEvent) && (
                 <div className="booking-modal" onMouseDown={(event) => event.target === event.currentTarget && handleClose()}>

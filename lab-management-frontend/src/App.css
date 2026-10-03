@@ -245,6 +245,18 @@
   animation: request-spin 900ms linear infinite;
 }
 
+@media (max-width: 1100px) {
+  .app-content {
+  padding-right: 28px;
+  padding-left: 28px;
+  }
+
+  .app-topbar {
+  padding-right: 28px;
+  padding-left: 28px;
+  }
+}
+
 @keyframes request-spin {
   to { transform: rotate(360deg); }
 }
@@ -302,9 +314,12 @@
   .nav {
     display: flex;
     gap: 5px;
+    margin: 0 -4px;
     overflow-x: auto;
     padding-bottom: 2px;
+    overscroll-behavior-x: contain;
     scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
   }
 
   .nav-link {
@@ -333,7 +348,9 @@
   .app-topbar {
     position: static;
     min-height: 52px;
-    padding: 0 18px;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    padding: 10px 18px;
   }
 
   .app-context {
@@ -356,6 +373,28 @@
   .page-heading h1,
   .page-heading h2 {
     font-size: 27px;
+  }
+}
+
+@media (max-width: 420px) {
+  .app-topbar {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 7px;
+    padding: 10px 14px;
+  }
+
+  .app-context {
+    flex-wrap: wrap;
+  }
+
+  .app-content {
+    padding: 20px 12px 28px;
+  }
+
+  .page-heading h1,
+  .page-heading h2 {
+    font-size: 24px;
   }
 }
 

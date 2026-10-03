@@ -19,7 +19,7 @@ const CATALOG_CONFIG = {
     departments: {
         title: 'Departments',
         itemName: 'department',
-        kicker: 'ACADEMIC STRUCTURE',
+        kicker: 'DEPARTMENT DIRECTORY',
         description: 'Manage academic departments, codes, and descriptions.',
         filename: 'departments.csv',
         loadingMessage: 'Loading departments...',
@@ -40,7 +40,7 @@ const CATALOG_CONFIG = {
     courses: {
         title: 'Courses',
         itemName: 'course',
-        kicker: 'ACADEMIC CATALOG',
+        kicker: 'COURSE DIRECTORY',
         description: 'Manage courses, department assignments, and credit values.',
         filename: 'courses.csv',
         loadingMessage: 'Loading courses...',

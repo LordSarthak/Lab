@@ -405,3 +405,25 @@
         grid-template-columns: 1fr;
     }
 }
+
+@media (max-width: 380px) {
+    .dashboard-metrics {
+        grid-template-columns: 1fr;
+    }
+
+    .metric-card {
+        min-height: 74px;
+    }
+
+    .dashboard-panel {
+        padding: 13px;
+    }
+
+    .dashboard-panel-heading {
+        flex-wrap: wrap;
+    }
+
+    .dashboard-calendar.react-calendar {
+        padding: 8px;
+    }
+}

@@ -155,7 +155,7 @@
     to { opacity: 1; transform: translateY(0); }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 900px) {
     .page-header {
         align-items: flex-start;
         flex-direction: column;
@@ -164,15 +164,40 @@
 
     .page-header > div:last-child {
         width: 100%;
+        flex-wrap: wrap;
     }
 
     .page-header button {
-        flex: 1;
+        flex: 1 1 calc(50% - 8px);
+        min-width: 0;
+        padding-right: 8px;
+        padding-left: 8px;
     }
 
     .toast-message {
         right: 12px;
         bottom: 12px;
+    }
+
+    @media (max-width: 380px) {
+        .page-header > div:last-child {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .page-header button {
+            width: 100%;
+            min-height: 42px;
+            font-size: 11px;
+        }
+
+        .confirmation-modal .confirmation-actions {
+            flex-direction: column-reverse;
+        }
+
+        .confirmation-modal .confirmation-actions button {
+            width: 100%;
+        }
     }
 }
 

@@ -22,6 +22,67 @@
     gap: 12px;
 }
 
+.timetable-overview {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.timetable-overview > div {
+    display: grid;
+    gap: 4px;
+    min-width: 0;
+    padding: 12px 15px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 7px;
+}
+
+.timetable-overview strong {
+    color: var(--green-deep);
+    font-family: var(--font-display);
+    font-size: 20px;
+    line-height: 1;
+}
+
+.timetable-overview span {
+    color: #65756c;
+    font-size: 11px;
+}
+
+.timetable-calendar-panel {
+    display: grid;
+    gap: 12px;
+    min-width: 0;
+    padding: 17px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(33, 54, 44, 0.06);
+}
+
+.timetable-calendar-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.timetable-calendar-heading h2 {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 650;
+}
+
+.timetable-calendar-heading p {
+    margin: 4px 0 0;
+    color: #65756c;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
 .selected-lab-panel {
     display: grid;
     gap: 16px;
@@ -467,28 +528,39 @@
 
 .booking-page .rbc-calendar {
     min-width: 0;
-    padding: 12px;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 7px;
-    box-shadow: 0 5px 16px rgba(33, 54, 44, 0.035);
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
     font-family: var(--font-body);
 }
 
 .booking-page .rbc-toolbar {
     flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 12px;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.booking-page .rbc-toolbar .rbc-btn-group {
+    display: inline-flex;
+    gap: 5px;
+}
+
+.booking-page .rbc-toolbar .rbc-btn-group button + button {
+    margin-left: 0;
 }
 
 .booking-page .rbc-toolbar button {
-    min-height: 32px;
-    padding: 5px 9px;
+    min-height: 35px;
+    padding: 6px 11px;
     color: #405148;
     background: #fff;
     border: 1px solid var(--line);
-    border-radius: 4px;
+    border-radius: 6px;
     font-size: 11px;
+    font-weight: 650;
+    transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
 }
 
 .booking-page .rbc-toolbar button:hover,
@@ -503,8 +575,8 @@
 .booking-page .rbc-toolbar-label {
     color: var(--ink);
     font-family: var(--font-display);
-    font-size: 18px;
-    font-weight: 600;
+    font-size: 19px;
+    font-weight: 650;
 }
 
 .booking-page .rbc-header,
@@ -513,26 +585,36 @@
 }
 
 .booking-page .rbc-header {
-    padding: 7px 4px;
+    padding: 9px 5px;
     color: #4b5e54;
     background: #f7f9f7;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.035em;
 }
 
 .booking-page .rbc-header.rbc-today,
 .booking-page .rbc-day-bg.rbc-today {
-    background: #edf4ef;
+    background: #f0f7f2;
 }
 
 .booking-page .rbc-time-gutter .rbc-timeslot-group {
-    background: #fbfcfa;
+    background: #fafbf9;
+}
+
+.booking-page .rbc-label {
+    padding: 0 7px;
+    color: #68786f;
+    font-size: 10px;
+    font-weight: 550;
 }
 
 .booking-page .rbc-time-view,
 .booking-page .rbc-month-view {
     border-color: var(--line);
-    border-radius: 4px;
+    border-radius: 7px;
+    overflow: hidden;
 }
 
 .booking-page .rbc-time-content,
@@ -542,8 +624,36 @@
     border-color: #e8eee9;
 }
 
+.booking-page .rbc-timeslot-group {
+    border-bottom-color: #dce5de;
+}
+
+.booking-page .rbc-day-slot .rbc-time-slot {
+    border-top-color: #e8eee9;
+}
+
+.booking-page .rbc-day-slot .rbc-events-container {
+    z-index: 1;
+}
+
+.booking-page .rbc-day-slot .rbc-event {
+    box-sizing: border-box;
+    isolation: isolate;
+    min-height: 0;
+}
+
 .booking-page .rbc-event {
-    border-radius: 4px;
+    transition: filter 140ms ease, box-shadow 140ms ease;
+}
+
+.booking-page .rbc-event:hover,
+.booking-page .rbc-event:focus {
+    filter: brightness(1.06);
+    box-shadow: 0 3px 9px rgba(24, 55, 40, 0.2);
+}
+
+.booking-page .rbc-current-time-indicator {
+    display: none;
 }
 
 .booking-page .rbc-event-label {
@@ -560,6 +670,37 @@
     line-height: 1.25;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.booking-page .rbc-day-slot .rbc-event-content {
+    min-width: 0;
+    white-space: normal;
+}
+
+.booking-event-copy {
+    display: grid;
+    gap: 4px;
+    min-width: 0;
+    line-height: 1.2;
+}
+
+.booking-event-copy strong,
+.booking-event-copy span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.booking-event-copy strong {
+    font-size: 12px;
+    font-weight: 750;
+    white-space: nowrap;
+}
+
+.booking-event-copy span {
+    font-size: 10px;
+    font-weight: 500;
+    opacity: 0.9;
     white-space: nowrap;
 }
 
@@ -695,6 +836,25 @@
 }
 
 @media (max-width: 640px) {
+    .timetable-overview {
+        gap: 7px;
+    }
+
+    .timetable-overview > div {
+        padding: 10px;
+    }
+
+    .timetable-calendar-panel {
+        gap: 10px;
+        padding: 11px;
+    }
+
+    .timetable-calendar-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+    }
+
     .selected-lab-panel {
         padding: 13px;
     }
@@ -717,7 +877,7 @@
     }
 
     .booking-page .rbc-calendar {
-        padding: 7px;
+        padding: 0;
     }
 
     .booking-page .rbc-toolbar {
@@ -759,10 +919,35 @@
 
     .booking-page .rbc-calendar {
         overflow-x: auto;
+        overscroll-behavior-x: contain;
+        -webkit-overflow-scrolling: touch;
     }
 
     .modalContent {
         padding: 18px;
+    }
+
+    @media (max-width: 380px) {
+        .timetable-overview {
+            grid-template-columns: 1fr;
+        }
+
+        .timetable-overview > div {
+            grid-template-columns: auto 1fr;
+            align-items: baseline;
+            gap: 9px;
+        }
+
+        .booking-page .rbc-toolbar {
+            grid-template-columns: 1fr;
+            justify-items: center;
+        }
+
+        .booking-page .rbc-toolbar .rbc-btn-group:first-child,
+        .booking-page .rbc-toolbar .rbc-btn-group:last-child {
+            grid-column: 1;
+            justify-content: center;
+        }
     }
 
     .timetable-interval-row {
